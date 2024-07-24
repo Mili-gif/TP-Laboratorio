@@ -5,22 +5,34 @@ Algoritmo tpLaboratorioGenerala
 	//Poker: 4 dados iguales (ver: "Del Poker"en Generala Real)
 	//Generala: 5 dados iguales.
 	//Doble Generala: igual a la anterior (es optativa).
-	Definir dadoA,dadoB, dadoC, dadoD, dadoE como Entero
+	//Definir dadoA,dadoB, dadoC, dadoD, dadoE como Entero
+	Definir dados,CANTIDAD_DE_DADOS como Entero
+	CANTIDAD_DE_DADOS <- 5
+	Definir DADO_A,DADO_B,DADO_C,DADO_D,DADO_E, OPC_DEJAR_DE_ELEGIR Como Caracter
+	DADO_A <- "A"
+	DADO_B <- "B"
+	DADO_C <- "C"
+	DADO_D <- "D"
+	DADO_E <- "E"
+	OPC_DEJAR_DE_ELEGIR<- "X"
+	
 	Definir jugador1, jugador2,eleccion, respuestaTirada Como Caracter
 	Definir fila, columna como Entero
 	Definir tablaDePuntajes, contadorTiradas como Entero
 	Dimension tablaDePuntajes[10,2]
+	Dimension dados[5] 
 	Escribir "Ingrese el nombre del primer jugador"
 	Leer jugador1
 	Escribir "Ingrese el nombre del segundo jugador"
 	Leer jugador2
-	dadoA<- tirarDado()
-	dadoB<- tirarDado()
-	dadoC<- tirarDado()
-	dadoD<- tirarDado()
-	dadoE<- tirarDado()
+	
+	tirarTodosLosDados(dados,CANTIDAD_DE_DADOS)
+	//dadoB<- tirarDado()
+	//dadoC<- tirarDado()
+	//dadoD<- tirarDado()
+	//dadoE<- tirarDado()
 	Escribir "Los resultados que salieron en cada dado fueron: "
-	mostrarDados(dadoA,dadoB,dadoC,dadoD,dadoE)
+	mostrarDados(dados,CANTIDAD_DE_DADOS)
 	contadorTiradas <- 1
 	
 	//Aca el usuario puede anotar los puntos si asi lo quisiera. Que no tenga la obligacion de volver a tirar los dados.
@@ -41,22 +53,22 @@ Algoritmo tpLaboratorioGenerala
 			eleccion <- Mayusculas(eleccion)
 			
 			Segun eleccion Hacer
-				"A":
-					dadoA<- tirarDado()
+				DADO_A:
+					dados[obtenerPosicionPorLetraDado(DADO_A)] <- tirarDado()
 					eleccionValida <- 1
-				"B":
-					dadoB<- tirarDado()
+				DADO_B:
+					dados[obtenerPosicionPorLetraDado(DADO_B)] <- tirarDado()
 					eleccionValida <- 1
-				"C":
-					dadoC<- tirarDado()
+				DADO_C:
+					dados[obtenerPosicionPorLetraDado(DADO_C)] <- tirarDado()
 					eleccionValida <- 1
-				"D":
-					dadoD<- tirarDado()
+				DADO_D:
+					dados[obtenerPosicionPorLetraDado(DADO_D)] <- tirarDado()
 					eleccionValida <- 1
-				"E":
-					dadoE<- tirarDado()
+				DADO_E:
+					dados[obtenerPosicionPorLetraDado(DADO_E)] <- tirarDado()
 					eleccionValida <- 1
-				"X":
+				OPC_DEJAR_DE_ELEGIR:
 					eleccionValida <- 1
 				De Otro Modo:
 					Escribir "Opcion no valida"
@@ -64,10 +76,12 @@ Algoritmo tpLaboratorioGenerala
 			Fin Segun
 		Hasta Que eleccionValida = 1
 		
+		
+		Escribir "Los resultados de la tirada fueron: "
+		mostrarDados(dados,CANTIDAD_DE_DADOS)
 		si eleccion = "X" Entonces
 			//Borrar Pantalla	
-			Escribir "Los resultados de la tirada fueron: "
-			mostrarDados(dadoA,dadoB,dadoC,dadoD,dadoE)
+			
 			contadorTiradas <- contadorTiradas + 1
 			
 			Escribir "¿Usted desea volver a tirar?. Si [S] o No [N]"
@@ -76,9 +90,6 @@ Algoritmo tpLaboratorioGenerala
 		FinSi
 	Hasta Que contadorTiradas >= 3 o respuestaTirada = 'N'
 	
-	
-			
-
 FinAlgoritmo
 
 Funcion resultado <- tirarDado
@@ -86,16 +97,53 @@ Funcion resultado <- tirarDado
 Fin Funcion
 
 
-SubAlgoritmo mostrarDados(dadoA,dadoB,dadoC,dadoD,dadoE)
-	Escribir "Dado A: ",dadoA
-	Escribir "Dado B: ",dadoB
-	Escribir "Dado C: ",dadoC
-	Escribir "Dado D: ",dadoD
-	Escribir "Dado E: ",dadoE
+SubAlgoritmo mostrarDados(dados, CANTIDAD_DE_DADOS)
+	Para i<-0 Hasta CANTIDAD_DE_DADOS - 1 Con Paso 1 Hacer
+		Escribir "Dado ", obtenerLetraDelDadoPorPosicion(i),": ",dados[i]
+	Fin Para
 FinSubAlgoritmo
 
 
+SubAlgoritmo tirarTodosLosDados(dados, CANTIDAD_DE_DADOS)
+	definir i Como Entero
+	Para i<-0 Hasta CANTIDAD_DE_DADOS - 1 Con Paso 1 Hacer
+		dados[i] <- tirarDado()
+	Fin Para
+Fin Funcion
 
+Funcion posicion <- obtenerPosicionPorLetraDado(dadoLetra)
+	Segun dadoLetra Hacer
+		"A":
+			posicion<-0
+		"B":
+			posicion<-1
+		"C":
+			posicion<-2
+		"D":
+			posicion<-3
+		"E":
+			posicion<-4
+		De Otro Modo:
+			posicion<--1
+	Fin Segun
+Fin Funcion
+
+Funcion letra <- obtenerLetraDelDadoPorPosicion(posicion)
+	Segun posicion Hacer
+		0:
+			letra<-"A"
+		1:
+			letra<-"B"
+		2:
+			letra<-"C"
+		3:
+			letra<-"D"
+		4:
+			letra<-"E"
+		De Otro Modo:
+			letra<-"POSICION INVALIDA"
+	Fin Segun
+Fin Funcion
 
 
 
