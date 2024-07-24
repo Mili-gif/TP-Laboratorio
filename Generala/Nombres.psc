@@ -26,9 +26,14 @@ Algoritmo tpLaboratorioGenerala
 	//Aca el usuario puede anotar los puntos si asi lo quisiera. Que no tenga la obligacion de volver a tirar los dados.
 	//Comienza la segunda Tirada
 	Definir eleccionValida Como Entero
-	eleccionValida <- 0
-	respuestaTirada <- "N"
+	//Eleccion de dados 
+	//El usuario puede seleccionar los dados (ABCDE) que quiera volver a tirar (que pasa si vuelve a elegir un dado que ya elegió)
+	//En caso de que quiera dejar de seleccionar los dados elije X y los dados que elegio se tiran
+	//Si no elegió ningun dado ó se terminaron sus tiradas dispobibles, se va a la fase de elegir puntuacion
+	 
 	Repetir
+		eleccionValida <- 0
+		respuestaTirada <- "N"
 		Repetir //Para validar si la eleccion es valida
 			Escribir "Elija los dados que quiera volver a tirar."
 			Escribir "En caso de querer salir ingrese X."
