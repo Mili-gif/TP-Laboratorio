@@ -16,79 +16,60 @@ Algoritmo tpLaboratorioGenerala
 	DADO_E <- "E"
 	OPC_DEJAR_DE_ELEGIR<- "X"
 	
-	Definir jugador1, jugador2,eleccion, respuestaTirada Como Caracter
+	Definir jugador1, jugador2,eleccion Como Caracter
 	Definir fila, columna como Entero
 	Definir tablaDePuntajes, contadorTiradas como Entero
 	Dimension tablaDePuntajes[10,2]
 	Dimension dados[5] 
+	
+	
 	Escribir "Ingrese el nombre del primer jugador"
 	Leer jugador1
 	Escribir "Ingrese el nombre del segundo jugador"
 	Leer jugador2
 	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------
+	//Comienzo de Turno, se tiran todos los dados
 	tirarTodosLosDados(dados,CANTIDAD_DE_DADOS)
-	//dadoB<- tirarDado()
-	//dadoC<- tirarDado()
-	//dadoD<- tirarDado()
-	//dadoE<- tirarDado()
 	Escribir "Los resultados que salieron en cada dado fueron: "
 	mostrarDados(dados,CANTIDAD_DE_DADOS)
-	contadorTiradas <- 1
 	
-	//Aca el usuario puede anotar los puntos si asi lo quisiera. Que no tenga la obligacion de volver a tirar los dados.
-	//Comienza la segunda Tirada
-	Definir eleccionValida Como Entero
-	//Eleccion de dados 
-	//El usuario puede seleccionar los dados (ABCDE) que quiera volver a tirar (que pasa si vuelve a elegir un dado que ya elegió)
+	
+	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------
+	//Eleccion de dados para volver a tirar
+	//El usuario puede seleccionar los dados (ABCDE) que quiera volver a tirar (que pasa si vuelve a elegir un dado que ya elegió?)
 	//En caso de que quiera dejar de seleccionar los dados elije X y los dados que elegio se tiran
 	//Si no elegió ningun dado ó se terminaron sus tiradas dispobibles, se va a la fase de elegir puntuacion
-	 
+	Definir eleccionValida, esFaseDeTiradas Como Entero
+	Definir elecciones Como Caracter
+	esFaseDeTiradas <- 1
+	contadorTiradas <- 1
+	
 	Repetir
 		eleccionValida <- 0
-		respuestaTirada <- "N"
+		elecciones<-""
 		Repetir //Para validar si la eleccion es valida
 			Escribir "Elija los dados que quiera volver a tirar."
 			Escribir "En caso de querer salir ingrese X."
 			Leer eleccion
-			eleccion <- Mayusculas(eleccion)
+			eleccion <- Mayusculas(eleccion);
+			eleccionValida <- eleccionElegirDadoEsValida(eleccion)
 			
-			Segun eleccion Hacer
-				DADO_A:
-					dados[obtenerPosicionPorLetraDado(DADO_A)] <- tirarDado()
-					eleccionValida <- 1
-				DADO_B:
-					dados[obtenerPosicionPorLetraDado(DADO_B)] <- tirarDado()
-					eleccionValida <- 1
-				DADO_C:
-					dados[obtenerPosicionPorLetraDado(DADO_C)] <- tirarDado()
-					eleccionValida <- 1
-				DADO_D:
-					dados[obtenerPosicionPorLetraDado(DADO_D)] <- tirarDado()
-					eleccionValida <- 1
-				DADO_E:
-					dados[obtenerPosicionPorLetraDado(DADO_E)] <- tirarDado()
-					eleccionValida <- 1
-				OPC_DEJAR_DE_ELEGIR:
-					eleccionValida <- 1
-				De Otro Modo:
-					Escribir "Opcion no valida"
-					//Borrar Pantalla	
-			Fin Segun
-		Hasta Que eleccionValida = 1
+			si eleccionValida = 1 Entonces
+				elecciones <- Concatenar(elecciones,eleccion)
+			FinSi
+		Hasta Que eleccion = "X"
 		
-		
-		Escribir "Los resultados de la tirada fueron: "
+		tirarDadosConEleccion(dados , elecciones)
 		mostrarDados(dados,CANTIDAD_DE_DADOS)
-		si eleccion = "X" Entonces
+		si elecciones = "X" o contadorTiradas >= 3 Entonces
 			//Borrar Pantalla	
+			esFaseDeTiradas <- 0
 			
-			contadorTiradas <- contadorTiradas + 1
-			
-			Escribir "¿Usted desea volver a tirar?. Si [S] o No [N]"
-			Leer respuestaTirada
-			respuestaTirada <- Mayusculas(respuestaTirada)
 		FinSi
-	Hasta Que contadorTiradas >= 3 o respuestaTirada = 'N'
+		contadorTiradas <- contadorTiradas + 1
+	Hasta Que esFaseDeTiradas = 0
 	
 FinAlgoritmo
 
@@ -104,6 +85,7 @@ SubAlgoritmo mostrarDados(dados, CANTIDAD_DE_DADOS)
 FinSubAlgoritmo
 
 
+
 SubAlgoritmo tirarTodosLosDados(dados, CANTIDAD_DE_DADOS)
 	definir i Como Entero
 	Para i<-0 Hasta CANTIDAD_DE_DADOS - 1 Con Paso 1 Hacer
@@ -113,37 +95,59 @@ Fin Funcion
 
 Funcion posicion <- obtenerPosicionPorLetraDado(dadoLetra)
 	Segun dadoLetra Hacer
-		"A":
-			posicion<-0
-		"B":
-			posicion<-1
-		"C":
-			posicion<-2
-		"D":
-			posicion<-3
-		"E":
-			posicion<-4
-		De Otro Modo:
-			posicion<--1
+		"A": posicion<-0
+		"B": posicion<-1
+		"C": posicion<-2
+		"D": posicion<-3
+		"E": posicion<-4
+		De Otro Modo: posicion<--1
 	Fin Segun
 Fin Funcion
 
 Funcion letra <- obtenerLetraDelDadoPorPosicion(posicion)
 	Segun posicion Hacer
-		0:
-			letra<-"A"
-		1:
-			letra<-"B"
-		2:
-			letra<-"C"
-		3:
-			letra<-"D"
-		4:
-			letra<-"E"
-		De Otro Modo:
-			letra<-"POSICION INVALIDA"
+		0: letra<-"A"
+		1: letra<-"B"
+		2: letra<-"C"
+		3: letra<-"D"
+		4: letra<-"E"
+		De Otro Modo: letra<-"POSICION INVALIDA"
 	Fin Segun
 Fin Funcion
+
+
+Funcion esValido <- eleccionElegirDadoEsValida(eleccion)
+	definir opcionesValidas Como Caracter
+	definir i como entero
+	esValido <- 0
+	opcionesValidas <- "ABCDEX"
+	eleccion <- Mayusculas(eleccion)
+	i <- 0
+	Repetir
+		si eleccion = Subcadena(opcionesValidas,i,i) Entonces
+			esValido <- 1
+		FinSi
+		i <- i + 1
+	Hasta Que i >= Longitud(opcionesValidas) o esValido = 1
+	
+FinFuncion
+
+
+SubAlgoritmo tirarDadosConEleccion(dados , dadosElegidos)
+	definir i Como Entero
+	i <- 0
+	definir eleccion Como Caracter
+	
+	Repetir
+		eleccion <- Subcadena(dadosElegidos,i,i)
+		si eleccion <> "X" Entonces
+			dados[obtenerPosicionPorLetraDado(eleccion)] <- tirarDado()
+		FinSi
+		i <- i+1
+	Hasta Que i >= Longitud(dadosElegidos) o eleccion = "X"
+	
+Fin Funcion
+
 
 
 
