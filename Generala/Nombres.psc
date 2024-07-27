@@ -16,10 +16,27 @@ Algoritmo tpLaboratorioGenerala
 	DADO_E <- "E"
 	OPC_DEJAR_DE_ELEGIR<- "X"
 	
+	
+	
+	
+	
 	Definir jugador1, jugador2,eleccion Como Caracter
 	Definir fila, columna como Entero
 	Definir tablaDePuntajes, contadorTiradas como Entero
+	
 	Dimension tablaDePuntajes[10,2]
+	//Fila 0 para puntos de con el dado 1
+	//Fila 1 para puntos de con el dado 2
+	//Fila 2 para puntos de con el dado 3
+	//Fila 3 para puntos de con el dado 4
+	//Fila 4 para puntos de con el dado 5
+	//Fila 5 para puntos de con el dado 6
+	//Fila 6 para puntos de Escalera
+	//Fila 7 para puntos de Full
+	//Fila 8 para puntos de Poker
+	//Fila 9 para puntos de Generala
+	
+	
 	Dimension dados[5] 
 	
 	
@@ -32,8 +49,7 @@ Algoritmo tpLaboratorioGenerala
 	//Comienzo de Turno, se tiran todos los dados
 	tirarTodosLosDados(dados,CANTIDAD_DE_DADOS)
 	Escribir "Los resultados que salieron en cada dado fueron: "
-	mostrarDados(dados,CANTIDAD_DE_DADOS)
-	
+	Escribir "puntaje es " obtenerPuntaje(dados,CANTIDAD_DE_DADOS, opc)
 	
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -72,7 +88,57 @@ Algoritmo tpLaboratorioGenerala
 	Hasta Que esFaseDeTiradas = 0
 	//Fin de la fase de "Eleccion de dados para volver a tirar"
 	//------------------------------------------------------------------------------------------------------------------------------------------------------
+	//Comienzo  de la fase de buscar puntajes
+	//Definir hayEscalera, hayPoker, hayFull, hayGenerala como Entero
+	//hayEscalera <- hayEscalera(dados,CANTIDAD_DE_DADOS)
+	//hayPoker <- hayPoker(dados,CANTIDAD_DE_DADOS)
+	//hayFull <- hayFull(dados,CANTIDAD_DE_DADOS)
+	//hayGenerala <- hayGenerala(dados,CANTIDAD_DE_DADOS)
+	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------
+	//Comienzo  de la fase de buscar puntajes
+	
+	
+	
+	
 FinAlgoritmo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 Funcion resultado <- tirarDado
 	resultado <- azar(6-1+1)+1
@@ -175,13 +241,33 @@ Funcion resultado <- hayEscalera(dados, CANTIDAD_DE_DADOS)
 		Fin Segun
 	Fin Para
 
-	si (hayNroUno = 1 y hayNroDos = 1 y hayNroTres = 1, hayNroCuatro = 1, hayNroCinco = 1) o
-		(hayNroDos = 1 y hayNroTres = 1, hayNroCuatro = 1, hayNroCinco = 1 y hayNroSeis = 1)
+	Si (hayNroUno = 1 y hayNroDos = 1 y hayNroTres = 1 y hayNroCuatro = 1 y hayNroCinco = 1) o (hayNroDos = 1 y hayNroTres = 1 y hayNroCuatro = 1 y hayNroCinco = 1 y hayNroSeis = 1) Entonces
 		resultado <- 1
 	FinSi
 FinFuncion
 
 
+//Esta funcion debe usarse despues validar que la opcionElegida sea valida
+Funcion puntaje  <-  obtenerPuntaje(dados,CANTIDAD_DE_DADOS,opcionElegida)
+	definir i Como Entero
+	puntaje <- 0
+	Segun opcionElegida Hacer
+		"1","2","3","4","5","6":
+			definir nro como entero
+			nro <- ConvertirANumero(opcionElegida)
+			Para i <- 0 Hasta CANTIDAD_DE_DADOS - 1 Con Paso 1 Hacer
+				si dados[i] = nro Entonces
+					puntaje <- puntaje + nro
+				FinSi
+			Fin Para
+		"E": puntaje <- 20
+		"F": puntaje <- 30
+		"P": puntaje <- 40
+		"G": puntaje <- 50
+		De Otro Modo:
+			puntaje <- -1
+	Fin Segun
+FinFuncion
 
 
 
