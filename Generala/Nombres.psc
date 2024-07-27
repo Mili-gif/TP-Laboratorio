@@ -37,7 +37,7 @@ Algoritmo tpLaboratorioGenerala
 	
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------
-	//Eleccion de dados para volver a tirar
+	//Comienzo de la fase de "Eleccion de dados para volver a tirar"
 	//El usuario puede seleccionar los dados (ABCDE) que quiera volver a tirar (que pasa si vuelve a elegir un dado que ya elegió?)
 	//En caso de que quiera dejar de seleccionar los dados elije X y los dados que elegio se tiran
 	//Si no elegió ningun dado ó se terminaron sus tiradas dispobibles, se va a la fase de elegir puntuacion
@@ -63,14 +63,15 @@ Algoritmo tpLaboratorioGenerala
 		
 		tirarDadosConEleccion(dados , elecciones)
 		mostrarDados(dados,CANTIDAD_DE_DADOS)
-		si elecciones = "X" o contadorTiradas >= 3 Entonces
+		si elecciones = "X" o contadorTiradas >= 2 Entonces
 			//Borrar Pantalla	
 			esFaseDeTiradas <- 0
 			
 		FinSi
 		contadorTiradas <- contadorTiradas + 1
 	Hasta Que esFaseDeTiradas = 0
-	
+	//Fin de la fase de "Eleccion de dados para volver a tirar"
+	//------------------------------------------------------------------------------------------------------------------------------------------------------
 FinAlgoritmo
 
 Funcion resultado <- tirarDado
@@ -115,7 +116,8 @@ Funcion letra <- obtenerLetraDelDadoPorPosicion(posicion)
 	Fin Segun
 Fin Funcion
 
-
+//-----------------------------------------------------------------------------------------------
+//Funciones para la fase de eleccion de tiradas de dados
 Funcion esValido <- eleccionElegirDadoEsValida(eleccion)
 	definir opcionesValidas Como Caracter
 	definir i como entero
@@ -147,6 +149,45 @@ SubAlgoritmo tirarDadosConEleccion(dados , dadosElegidos)
 	Hasta Que i >= Longitud(dadosElegidos) o eleccion = "X"
 	
 Fin Funcion
+
+//-----------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------------
+//Funciones para ver buscar puntajes
+Funcion resultado <- hayEscalera(dados, CANTIDAD_DE_DADOS)
+	resultado <- 0
+	definir i Como Entero
+	definir hayNroUno, hayNroDos, hayNroTres, hayNroCuatro, hayNroCinco, hayNroSeis Como Entero
+	hayNroUno <- 0
+	hayNroDos <- 0
+	hayNroTres <- 0
+	hayNroCuatro <- 0
+	hayNroCinco <- 0
+	hayNroSeis <- 0
+	
+	Para i <- 0 Hasta CANTIDAD_DE_DADOS - 1 Con Paso 1 Hacer
+		Segun dados[i] Hacer
+			1: hayNroUno <- 1
+			2: hayNroDos <- 1
+			3: hayNroTres <- 1
+			4: hayNroCuatro <- 1
+			5: hayNroCinco <- 1
+			6: hayNroSeis <- 1
+		Fin Segun
+	Fin Para
+
+	si (hayNroUno = 1 y hayNroDos = 1 y hayNroTres = 1, hayNroCuatro = 1, hayNroCinco = 1) o
+		(hayNroDos = 1 y hayNroTres = 1, hayNroCuatro = 1, hayNroCinco = 1 y hayNroSeis = 1)
+		resultado <- 1
+	FinSi
+FinFuncion
+
+
+
+
+
+
+
+
 
 
 
