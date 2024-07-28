@@ -49,8 +49,7 @@ Algoritmo tpLaboratorioGenerala
 	//Comienzo de Turno, se tiran todos los dados
 	tirarTodosLosDados(dados,CANTIDAD_DE_DADOS)
 	Escribir "Los resultados que salieron en cada dado fueron: "
-	Escribir "puntaje es " obtenerPuntaje(dados,CANTIDAD_DE_DADOS, opc)
-	
+	mostrarDados(dados, CANTIDAD_DE_DADOS)
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------
 	//Comienzo de la fase de "Eleccion de dados para volver a tirar"
@@ -88,18 +87,14 @@ Algoritmo tpLaboratorioGenerala
 	Hasta Que esFaseDeTiradas = 0
 	//Fin de la fase de "Eleccion de dados para volver a tirar"
 	//------------------------------------------------------------------------------------------------------------------------------------------------------
-	//Comienzo  de la fase de buscar puntajes
+	//Comienzo  de la fase de buscar puntajes y mostrar puntajes
 	//Definir hayEscalera, hayPoker, hayFull, hayGenerala como Entero
 	//hayEscalera <- hayEscalera(dados,CANTIDAD_DE_DADOS)
 	//hayPoker <- hayPoker(dados,CANTIDAD_DE_DADOS)
 	//hayFull <- hayFull(dados,CANTIDAD_DE_DADOS)
 	//hayGenerala <- hayGenerala(dados,CANTIDAD_DE_DADOS)
 	
-	//------------------------------------------------------------------------------------------------------------------------------------------------------
-	//Comienzo  de la fase de buscar puntajes
-	
-	
-	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------	
 	
 FinAlgoritmo
 
@@ -269,7 +264,23 @@ Funcion puntaje  <-  obtenerPuntaje(dados,CANTIDAD_DE_DADOS,opcionElegida)
 	Fin Segun
 FinFuncion
 
-
+Funcion indice <- obtenerPosicionDeLaTablaDePuntajes(opcionElegida)
+	opcionElegida <- Mayusculas(opcionElegida)
+	Segun opcionElegida Hacer
+		"1": indice<- 0
+		"2": indice<- 1
+		"3": indice<- 2
+		"4": indice<- 3
+		"5": indice<- 4
+		"6": indice<- 5
+		"E" : indice<- 6
+		"F": indice<- 7
+		"P": indice<- 8
+		"G": indice<- 9
+		De Otro Modo: indice<- -1
+	FinSegun
+	
+FinFuncion
 
 
 
