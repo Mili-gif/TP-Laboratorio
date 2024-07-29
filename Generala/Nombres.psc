@@ -294,7 +294,37 @@ SubAlgoritmo inicializarTablaDePuntajes(tablaDePuntajes, nroDeJugadores)
 	Fin Para
 FinSubAlgoritmo
 
-
+Funcion resultado <- hayFull (dados, CANTIDAD_DE_DADOS)
+    definir cont1, cont2, flag, num1, num2, flag2 Como Entero
+    flag2=0
+    num2=0
+    flag=0
+    cont1=0
+    cont2=0
+    Para i<-0 Hasta CANTIDAD_DE_DADOS-1 Con Paso 1 Hacer
+        si flag=0 Entonces
+            num1=dados[i]
+            flag=1
+        FinSi
+        si dados[i] = num1 Entonces
+            cont1 = cont1 +1
+        FinSi
+        si flag2=0 entonces
+            si dados[i]<>num1 entonces
+                num2=dados[i]
+                flag2=1
+            finsi
+        FinSi
+        si dados[i] = num2 Entonces
+            cont2 = cont2 +1
+        FinSi
+    Fin Para
+    si cont1 = 2 y cont2 = 3 o cont1=3 y cont2=2 Entonces
+        resultado<- 1
+    SiNo
+        resultado<- 0
+    FinSi
+Fin Funcion
 
 
 
