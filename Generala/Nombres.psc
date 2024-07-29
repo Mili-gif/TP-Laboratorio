@@ -1,3 +1,4 @@
+
 Algoritmo tpLaboratorioGenerala
 	//Reglas Generala
 	//Escalera: 1-2-3-4 y 5 ; 2-3-4-5 y 6 ó 3-4-5-6 y 1, el 1 se puede colocar después del 6.
@@ -264,6 +265,8 @@ Funcion puntaje  <-  obtenerPuntaje(dados,CANTIDAD_DE_DADOS,opcionElegida)
 	Fin Segun
 FinFuncion
 
+
+
 Funcion indice <- obtenerPosicionDeLaTablaDePuntajes(opcionElegida)
 	opcionElegida <- Mayusculas(opcionElegida)
 	Segun opcionElegida Hacer
@@ -282,7 +285,14 @@ Funcion indice <- obtenerPosicionDeLaTablaDePuntajes(opcionElegida)
 	
 FinFuncion
 
-
+SubAlgoritmo inicializarTablaDePuntajes(tablaDePuntajes, nroDeJugadores)
+	Definir c,f Como Entero //(c de columnas y f de filas)
+	Para f<-0 Hasta 9 Con Paso 1 Hacer
+		Para c<-0 Hasta nroDeJugadores-1 Con Paso 1 Hacer
+			tablaDePuntajes(f,c)<- -1
+		Fin Para
+	Fin Para
+FinSubAlgoritmo
 
 
 
