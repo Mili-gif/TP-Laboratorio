@@ -26,6 +26,7 @@ Algoritmo tpLaboratorioGenerala
 	Definir tablaDePuntajes, contadorTiradas como Entero
 	
 	Dimension tablaDePuntajes[10,2]
+	inicializarTablaDePuntajes(tablaDePuntajes, 2)
 	//Fila 0 para puntos de con el dado 1
 	//Fila 1 para puntos de con el dado 2
 	//Fila 2 para puntos de con el dado 3
@@ -37,9 +38,16 @@ Algoritmo tpLaboratorioGenerala
 	//Fila 8 para puntos de Poker
 	//Fila 9 para puntos de Generala
 	
-	
+
 	Dimension dados[5] 
 	
+	//dados[0] <- 5
+	//dados[1] <- 5
+	//dados[2] <- 6
+	//dados[3] <- 4
+	//dados[4] <- 5
+	//mostrarDados(dados, CANTIDAD_DE_DADOS)
+	//mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,1) 
 	
 	Escribir "Ingrese el nombre del primer jugador"
 	Leer jugador1
@@ -133,7 +141,14 @@ FinAlgoritmo
 
 
 
-
+SubAlgoritmo inicializarTablaDePuntajes(tablaDePuntajes, nroDeJugadores)
+	Definir c,f Como Entero //(c de columnas y f de filas)
+	Para f<-0 Hasta 9 Con Paso 1 Hacer
+		Para c<-0 Hasta nroDeJugadores-1 Con Paso 1 Hacer
+			tablaDePuntajes(f,c)<- -1
+		Fin Para
+	Fin Para
+FinSubAlgoritmo
 
 
 Funcion resultado <- tirarDado
@@ -243,6 +258,140 @@ Funcion resultado <- hayEscalera(dados, CANTIDAD_DE_DADOS)
 FinFuncion
 
 
+Funcion resultado <- hayFull (dados, CANTIDAD_DE_DADOS)
+    definir cont1, cont2, flag, num1, num2, flag2 Como Entero
+    flag2=0
+    num2=0
+    flag=0
+    cont1=0
+    cont2=0
+    Para i<-0 Hasta CANTIDAD_DE_DADOS-1 Con Paso 1 Hacer
+        si flag=0 Entonces
+            num1=dados[i]
+            flag=1
+        FinSi
+        si dados[i] = num1 Entonces
+            cont1 = cont1 +1
+        FinSi
+        si flag2=0 entonces
+            si dados[i]<>num1 entonces
+                num2=dados[i]
+                flag2=1
+            finsi
+        FinSi
+        si dados[i] = num2 Entonces
+            cont2 = cont2 +1
+        FinSi
+    Fin Para
+    si cont1 = 2 y cont2 = 3 o cont1=3 y cont2=2 Entonces
+        resultado<- 1
+    SiNo
+        resultado<- 0
+    FinSi
+Fin Funcion
+
+subalgoritmo mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
+	definir puedeUnoPuntaje, puedeDosPuntaje, puedeTresPuntaje, puedeCuatroPuntaje, puedeCincoPuntaje, puedeSeisPuntaje, resultadoEscalera, resultadoFull, resultadoPoker, resultadoGenerala  Como Entero
+	definir aux  Como Entero
+	puedeUnoPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"1", tablaDePuntajes,nroJugador)
+	puedeDosPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"2", tablaDePuntajes,nroJugador)
+	puedeTresPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"3", tablaDePuntajes,nroJugador)
+	puedeCuatroPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"4", tablaDePuntajes,nroJugador)
+	puedeCincoPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"5", tablaDePuntajes,nroJugador)
+	puedeSeisPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"6", tablaDePuntajes,nroJugador)
+	resultadoEscalera <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"E", tablaDePuntajes,nroJugador)
+	resultadoFull <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"F", tablaDePuntajes,nroJugador)
+	resultadoPoker <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"P", tablaDePuntajes,nroJugador)
+	resultadoGenerala <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"G", tablaDePuntajes,nroJugador)
+	
+	aux <- puedeUnoPuntaje + puedeDosPuntaje + puedeTresPuntaje + puedeCuatroPuntaje + puedeCincoPuntaje + puedeSeisPuntaje + resultadoEscalera + resultadoFull + resultadoPoker + resultadoGenerala
+	
+	si aux > 0 Entonces
+		Escribir  "Posibles Jugadas disponibles: "
+		si puedeUnoPuntaje = 1 Entonces 
+			Escribir "1 - Puntos con 1 (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"1"),")"  
+		FinSi
+		si puedeDosPuntaje = 1 Entonces 
+			Escribir "2 - Puntos con 2 (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"2"),")"  
+		FinSi
+		si puedeTresPuntaje = 1 Entonces 
+			Escribir "3 - Puntos con 3 (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"3"),")"  
+		FinSi
+		si puedeCuatroPuntaje = 1 Entonces 
+			Escribir "4 - Puntos con 4 (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"4"),")"  
+		FinSi
+		si puedeCincoPuntaje = 1 Entonces 
+			Escribir "5 - Puntos con 5 (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"5"),")"  
+		FinSi
+		si puedeSeisPuntaje = 1 Entonces 
+			Escribir "6 - Puntos con 6 (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"6"),")"  
+		FinSi
+		si resultadoEscalera = 1 Entonces 
+			Escribir "E - Escalera (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"E"),")"  
+		FinSi
+		si resultadoFull = 1 Entonces 
+			Escribir "F - Full (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"F"),")"  
+		FinSi
+		si resultadoPoker = 1 Entonces 
+			Escribir "P - Poker (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"P"),")"  
+		FinSi
+		si resultadoGenerala = 1 Entonces 
+			Escribir "G - Generala (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"G"),")"  
+		FinSi
+		
+	SiNo
+		Escribir  "No hay jugadas disponibles "
+	FinSi
+	
+	
+FinSubAlgoritmo
+
+Funcion resultado <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntaje, tablaDePuntajes,nroJugador)
+	definir yaTienePuntaje, indicePuntaje, tipoPuntajePuedeAnotar como entero
+	yaTienePuntaje <- 0
+	tipoPuntajePuedeAnotar <- 0
+	indicePuntaje <- obtenerPosicionDeLaTablaDePuntajes(tipoPuntaje)
+	si tablaDePuntajes[indicePuntaje,nroJugador-1] = -1 Entonces
+		Segun tipoPuntaje Hacer
+			"1": tipoPuntajePuedeAnotar <- existeNro(dados,CANTIDAD_DE_DADOS,1)
+			"2": tipoPuntajePuedeAnotar <- existeNro(dados,CANTIDAD_DE_DADOS,2)
+			"3": tipoPuntajePuedeAnotar <- existeNro(dados,CANTIDAD_DE_DADOS,3)
+			"4": tipoPuntajePuedeAnotar <- existeNro(dados,CANTIDAD_DE_DADOS,4)
+			"5": tipoPuntajePuedeAnotar <- existeNro(dados,CANTIDAD_DE_DADOS,5)
+			"6": tipoPuntajePuedeAnotar <- existeNro(dados,CANTIDAD_DE_DADOS,6)
+			"E": tipoPuntajePuedeAnotar <- hayEscalera(dados,CANTIDAD_DE_DADOS)
+			"F": tipoPuntajePuedeAnotar <- hayFull(dados,CANTIDAD_DE_DADOS)
+			"P": tipoPuntajePuedeAnotar <- 0//hayPoker(dados,CANTIDAD_DE_DADOS)
+			"G": tipoPuntajePuedeAnotar <- 0//hayPoker(dados,CANTIDAD_DE_DADOS)
+			De Otro Modo: tipoPuntajePuedeAnotar <- 0
+		Fin Segun
+	SiNo
+		yaTienePuntaje <- 1
+	FinSi
+	
+	si yaTienePuntaje = 1 o tipoPuntajePuedeAnotar = 0
+		resultado <- 0
+	sino
+		resultado <- 1
+	FinSi
+	
+FinFuncion
+
+funcion resultado <- existeNro(dados,CANTIDAD_DE_DADOS,nro)
+	definir i Como Entero
+	i <- 0
+	resultado <- 0
+	Mientras i <= CANTIDAD_DE_DADOS - 1 y resultado = 0 Hacer
+		si dados[i] = nro Entonces
+			resultado <- 1
+		FinSi
+		i <- i + 1
+	Fin Mientras
+	
+FinFuncion
+
+
+
 //Esta funcion debe usarse despues validar que la opcionElegida sea valida
 Funcion puntaje  <-  obtenerPuntaje(dados,CANTIDAD_DE_DADOS,opcionElegida)
 	definir i Como Entero
@@ -276,7 +425,7 @@ Funcion indice <- obtenerPosicionDeLaTablaDePuntajes(opcionElegida)
 		"4": indice<- 3
 		"5": indice<- 4
 		"6": indice<- 5
-		"E" : indice<- 6
+		"E": indice<- 6
 		"F": indice<- 7
 		"P": indice<- 8
 		"G": indice<- 9
@@ -285,46 +434,7 @@ Funcion indice <- obtenerPosicionDeLaTablaDePuntajes(opcionElegida)
 	
 FinFuncion
 
-SubAlgoritmo inicializarTablaDePuntajes(tablaDePuntajes, nroDeJugadores)
-	Definir c,f Como Entero //(c de columnas y f de filas)
-	Para f<-0 Hasta 9 Con Paso 1 Hacer
-		Para c<-0 Hasta nroDeJugadores-1 Con Paso 1 Hacer
-			tablaDePuntajes(f,c)<- -1
-		Fin Para
-	Fin Para
-FinSubAlgoritmo
 
-Funcion resultado <- hayFull (dados, CANTIDAD_DE_DADOS)
-    definir cont1, cont2, flag, num1, num2, flag2 Como Entero
-    flag2=0
-    num2=0
-    flag=0
-    cont1=0
-    cont2=0
-    Para i<-0 Hasta CANTIDAD_DE_DADOS-1 Con Paso 1 Hacer
-        si flag=0 Entonces
-            num1=dados[i]
-            flag=1
-        FinSi
-        si dados[i] = num1 Entonces
-            cont1 = cont1 +1
-        FinSi
-        si flag2=0 entonces
-            si dados[i]<>num1 entonces
-                num2=dados[i]
-                flag2=1
-            finsi
-        FinSi
-        si dados[i] = num2 Entonces
-            cont2 = cont2 +1
-        FinSi
-    Fin Para
-    si cont1 = 2 y cont2 = 3 o cont1=3 y cont2=2 Entonces
-        resultado<- 1
-    SiNo
-        resultado<- 0
-    FinSi
-Fin Funcion
 
 
 
