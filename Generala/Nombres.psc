@@ -41,11 +41,11 @@ Algoritmo tpLaboratorioGenerala
 
 	Dimension dados[5] 
 	
-	//dados[0] <- 1
-	//dados[1] <- 4
-	//dados[2] <- 4
+	//dados[0] <- 5
+	//dados[1] <- 5
+	//dados[2] <- 6
 	//dados[3] <- 4
-	//dados[4] <- 4
+	//dados[4] <- 5
 	//mostrarDados(dados, CANTIDAD_DE_DADOS)
 	//mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,1) 
 	
@@ -257,30 +257,58 @@ Funcion resultado <- hayEscalera(dados, CANTIDAD_DE_DADOS)
 	FinSi
 FinFuncion
 
+Funcion resultado <- hayPoker(dados, CANTIDAD_DE_DADOS)
+	resultado <- 0
+	definir i Como Entero
+	definir numeroUno, numeroDos, numeroTres, numeroCuatro, numeroCinco, numeroSeis Como Entero
+	numeroUno <- 0
+	numeroDos <- 0
+	numeroTres <- 0
+	numeroCuatro <- 0
+	numeroCinco <- 0
+	numeroSeis <- 0
+	
+	
+	Para i <- 0 Hasta CANTIDAD_DE_DADOS - 1 Con Paso 1 Hacer
+		Segun dados[i] Hacer
+			1: numeroUno <- 1
+			2: numeroDos <- 1
+			3: numeroTres <- 1
+			4: numeroCuatro <- 1
+			5: numeroCinco <- 1
+			6: numeroSeis <- 1
+		Fin Segun
+	Fin Para
+	
+	si(numeroUno = numeroDos Y numeroUno = numeroTres Y numeroUno = numeroCuatro) O (numeroDos = numeroTres Y numeroDos = numeroCuatro Y numeroDos = numeroCinco) O (numeroUno = numeroTres Y numeroUno = numeroCuatro Y numeroUno = numeroCinco) O (numeroUno = numeroDos Y numeroUno = numeroTres Y numeroUno = numeroCinco) O (numeroUno = numeroDos Y numeroUno = numeroCuatro Y numeroUno = numeroCinco) Entonces
+		resultado <- 1
+	FinSi
+	
+FinFuncion
 
 Funcion resultado <- hayFull (dados, CANTIDAD_DE_DADOS)
     definir cont1, cont2, flag, num1, num2, flag2 Como Entero
-    flag2<-0
-    num2<-0
-    flag<-0
-    cont1<-0
-    cont2<-0
+    flag2=0
+    num2=0
+    flag=0
+    cont1=0
+    cont2=0
     Para i<-0 Hasta CANTIDAD_DE_DADOS-1 Con Paso 1 Hacer
         si flag=0 Entonces
-            num1<-dados[i]
-            flag<-1
+            num1=dados[i]
+            flag=1
         FinSi
         si dados[i] = num1 Entonces
-            cont1 <- cont1 +1
+            cont1 = cont1 +1
         FinSi
         si flag2=0 entonces
             si dados[i]<>num1 entonces
-                num2<-dados[i]
-                flag2<-1
+                num2=dados[i]
+                flag2=1
             finsi
         FinSi
         si dados[i] = num2 Entonces
-            cont2 <- cont2 +1
+            cont2 = cont2 +1
         FinSi
     Fin Para
     si cont1 = 2 y cont2 = 3 o cont1=3 y cont2=2 Entonces
@@ -289,14 +317,6 @@ Funcion resultado <- hayFull (dados, CANTIDAD_DE_DADOS)
         resultado<- 0
     FinSi
 Fin Funcion
-
-Funcion resultado <- hayGenerala(dados)
-	resultado <- 0
-	Si (dados[0] = dados[1] y dados[0] = dados[2] y dados[0] = dados[3] y dados[0] = dados[4]) Entonces
-		resultado <- 1
-	FinSi
-FinFuncion
-
 
 subalgoritmo mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
 	definir puedeUnoPuntaje, puedeDosPuntaje, puedeTresPuntaje, puedeCuatroPuntaje, puedeCincoPuntaje, puedeSeisPuntaje, resultadoEscalera, resultadoFull, resultadoPoker, resultadoGenerala  Como Entero
@@ -370,7 +390,7 @@ Funcion resultado <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntaje, tab
 			"E": tipoPuntajePuedeAnotar <- hayEscalera(dados,CANTIDAD_DE_DADOS)
 			"F": tipoPuntajePuedeAnotar <- hayFull(dados,CANTIDAD_DE_DADOS)
 			"P": tipoPuntajePuedeAnotar <- 0//hayPoker(dados,CANTIDAD_DE_DADOS)
-			"G": tipoPuntajePuedeAnotar <- hayGenerala(dados)
+			"G": tipoPuntajePuedeAnotar <- 0//hayPoker(dados,CANTIDAD_DE_DADOS)
 			De Otro Modo: tipoPuntajePuedeAnotar <- 0
 		Fin Segun
 	SiNo
@@ -441,6 +461,7 @@ Funcion indice <- obtenerPosicionDeLaTablaDePuntajes(opcionElegida)
 	FinSegun
 	
 FinFuncion
+
 
 
 
