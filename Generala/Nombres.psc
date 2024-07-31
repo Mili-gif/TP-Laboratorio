@@ -41,11 +41,11 @@ Algoritmo tpLaboratorioGenerala
 
 	Dimension dados[5] 
 	
-	//dados[0] <- 5
-	//dados[1] <- 5
-	//dados[2] <- 6
+	//dados[0] <- 1
+	//dados[1] <- 4
+	//dados[2] <- 4
 	//dados[3] <- 4
-	//dados[4] <- 5
+	//dados[4] <- 4
 	//mostrarDados(dados, CANTIDAD_DE_DADOS)
 	//mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,1) 
 	
@@ -260,27 +260,27 @@ FinFuncion
 
 Funcion resultado <- hayFull (dados, CANTIDAD_DE_DADOS)
     definir cont1, cont2, flag, num1, num2, flag2 Como Entero
-    flag2=0
-    num2=0
-    flag=0
-    cont1=0
-    cont2=0
+    flag2<-0
+    num2<-0
+    flag<-0
+    cont1<-0
+    cont2<-0
     Para i<-0 Hasta CANTIDAD_DE_DADOS-1 Con Paso 1 Hacer
         si flag=0 Entonces
-            num1=dados[i]
-            flag=1
+            num1<-dados[i]
+            flag<-1
         FinSi
         si dados[i] = num1 Entonces
-            cont1 = cont1 +1
+            cont1 <- cont1 +1
         FinSi
         si flag2=0 entonces
             si dados[i]<>num1 entonces
-                num2=dados[i]
-                flag2=1
+                num2<-dados[i]
+                flag2<-1
             finsi
         FinSi
         si dados[i] = num2 Entonces
-            cont2 = cont2 +1
+            cont2 <- cont2 +1
         FinSi
     Fin Para
     si cont1 = 2 y cont2 = 3 o cont1=3 y cont2=2 Entonces
@@ -289,6 +289,14 @@ Funcion resultado <- hayFull (dados, CANTIDAD_DE_DADOS)
         resultado<- 0
     FinSi
 Fin Funcion
+
+Funcion resultado <- hayGenerala(dados)
+	resultado <- 0
+	Si (dados[0] = dados[1] y dados[0] = dados[2] y dados[0] = dados[3] y dados[0] = dados[4]) Entonces
+		resultado <- 1
+	FinSi
+FinFuncion
+
 
 subalgoritmo mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
 	definir puedeUnoPuntaje, puedeDosPuntaje, puedeTresPuntaje, puedeCuatroPuntaje, puedeCincoPuntaje, puedeSeisPuntaje, resultadoEscalera, resultadoFull, resultadoPoker, resultadoGenerala  Como Entero
@@ -362,7 +370,7 @@ Funcion resultado <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntaje, tab
 			"E": tipoPuntajePuedeAnotar <- hayEscalera(dados,CANTIDAD_DE_DADOS)
 			"F": tipoPuntajePuedeAnotar <- hayFull(dados,CANTIDAD_DE_DADOS)
 			"P": tipoPuntajePuedeAnotar <- 0//hayPoker(dados,CANTIDAD_DE_DADOS)
-			"G": tipoPuntajePuedeAnotar <- 0//hayPoker(dados,CANTIDAD_DE_DADOS)
+			"G": tipoPuntajePuedeAnotar <- hayGenerala(dados)
 			De Otro Modo: tipoPuntajePuedeAnotar <- 0
 		Fin Segun
 	SiNo
@@ -433,7 +441,6 @@ Funcion indice <- obtenerPosicionDeLaTablaDePuntajes(opcionElegida)
 	FinSegun
 	
 FinFuncion
-
 
 
 
