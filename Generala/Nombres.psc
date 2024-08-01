@@ -120,8 +120,8 @@ Algoritmo tpLaboratorioGenerala
 	Definir indiceTipoPuntaje, puntaje como entero
 	indiceTipoPuntaje <- obtenerPosicionDeLaTablaDePuntajes(tipoPuntajeElegido)
 	puntaje <- obtenerPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntajeElegido)
-	tablaDePuntajes[indiceTipoPuntaje,nroJugador] <- puntaje
-	mostrarTablaPuntaje(tablaDePuntajes, cantDePuntajes ,nroDeJugadores)
+	tablaDePuntajes[indiceTipoPuntaje,nroJugador-1] <- puntaje
+	mostrarTablaPuntaje(tablaDePuntajes, CANTIDAD_TIPOS_PUNTAJES ,cantidadDeJugadores)
 	Escribir "Fin del turno"
 FinAlgoritmo
 
@@ -306,27 +306,27 @@ FinFuncion
 
 Funcion resultado <- hayFull (dados, CANTIDAD_DE_DADOS)
     definir cont1, cont2, flag, num1, num2, flag2 Como Entero
-    flag2=0
-    num2=0
-    flag=0
-    cont1=0
-    cont2=0
+    flag2<-0
+    num2<-0
+    flag<-0
+    cont1<-0
+    cont2<-0
     Para i<-0 Hasta CANTIDAD_DE_DADOS-1 Con Paso 1 Hacer
         si flag=0 Entonces
-            num1=dados[i]
-            flag=1
+            num1<-dados[i]
+            flag<-1
         FinSi
         si dados[i] = num1 Entonces
-            cont1 = cont1 +1
+            cont1 <- cont1 +1
         FinSi
         si flag2=0 entonces
             si dados[i]<>num1 entonces
-                num2=dados[i]
-                flag2=1
+                num2<-dados[i]
+                flag2<-1
             finsi
         FinSi
         si dados[i] = num2 Entonces
-            cont2 = cont2 +1
+            cont2 <- cont2 +1
         FinSi
     Fin Para
     si cont1 = 2 y cont2 = 3 o cont1=3 y cont2=2 Entonces
@@ -485,8 +485,8 @@ FinSubAlgoritmo
 
 SubAlgoritmo mostrarTablaPuntaje(tablaDePuntajes, cantDePuntajes ,nroDeJugadores)
 	definir i,j Como Entero
-	Para i <- 0 Hasta cantDePuntajes Con Paso 1 Hacer
-		Para j <- 0 Hasta nroDeJugadores Con Paso 1 Hacer
+	Para i <- 0 Hasta cantDePuntajes-1 Con Paso 1 Hacer
+		Para j <- 0 Hasta nroDeJugadores-1 Con Paso 1 Hacer
 			Escribir  tablaDePuntajes[i,j] , " " Sin Saltar
 		Fin Para
 		Escribir ""
