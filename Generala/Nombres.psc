@@ -17,8 +17,9 @@ Algoritmo tpLaboratorioGenerala
 	DADO_E <- "E"
 	OPC_DEJAR_DE_ELEGIR<- "X"
 	
-	Definir CANTIDAD_TIPOS_PUNTAJES, cantidadDeJugadores como Entero
+	Definir CANTIDAD_TIPOS_PUNTAJES, cantidadDeJugadores, NRO_DE_RONDAS como Entero
 	CANTIDAD_TIPOS_PUNTAJES <- 10
+	NRO_DE_RONDAS <- 10
 	cantidadDeJugadores <- 2
 	
 	Definir jugador1, jugador2,eleccion Como Caracter
@@ -484,10 +485,21 @@ SubAlgoritmo escribirSeparador
 FinSubAlgoritmo
 
 SubAlgoritmo mostrarTablaPuntaje(tablaDePuntajes, cantDePuntajes ,nroDeJugadores)
-	definir i,j Como Entero
+	definir i,j, puntaje Como Entero
+	definir valorPuntaje, aux Como Caracter
+	
 	Para i <- 0 Hasta cantDePuntajes-1 Con Paso 1 Hacer
 		Para j <- 0 Hasta nroDeJugadores-1 Con Paso 1 Hacer
-			Escribir  tablaDePuntajes[i,j] , " " Sin Saltar
+			puntaje <- tablaDePuntajes[i,j]
+			si puntaje = -1 Entonces
+				valorPuntaje <- "-"
+			SiNo
+				valorPuntaje <- ConvertirATexto(puntaje)
+				//valorPuntaje <-Concatenar(" ",aux) 
+				//valorPuntaje <-Concatenar(aux," ") 
+			FinSi
+			
+			Escribir  " ",valorPuntaje," " Sin Saltar
 		Fin Para
 		Escribir ""
 	Fin Para
