@@ -17,16 +17,16 @@ Algoritmo tpLaboratorioGenerala
 	DADO_E <- "E"
 	OPC_DEJAR_DE_ELEGIR<- "X"
 	
-	
-	
-	
+	Definir CANTIDAD_TIPOS_PUNTAJES, cantidadDeJugadores como Entero
+	CANTIDAD_TIPOS_PUNTAJES <- 10
+	cantidadDeJugadores <- 2
 	
 	Definir jugador1, jugador2,eleccion Como Caracter
 	Definir fila, columna como Entero
 	Definir tablaDePuntajes, contadorTiradas como Entero
 	
-	Dimension tablaDePuntajes[10,2]
-	inicializarTablaDePuntajes(tablaDePuntajes, 2)
+	Dimension tablaDePuntajes[CANTIDAD_TIPOS_PUNTAJES,cantidadDeJugadores]
+	inicializarTablaDePuntajes(tablaDePuntajes, CANTIDAD_TIPOS_PUNTAJES, cantidadDeJugadores)
 	//Fila 0 para puntos de con el dado 1
 	//Fila 1 para puntos de con el dado 2
 	//Fila 2 para puntos de con el dado 3
@@ -54,6 +54,8 @@ Algoritmo tpLaboratorioGenerala
 	Escribir "Ingrese el nombre del segundo jugador"
 	Leer jugador2
 	
+	Definir nroJugador Como Entero
+	nroJugador <- 1
 	//------------------------------------------------------------------------------------------------------------------------------------------------------
 	//Comienzo de Turno, se tiran todos los dados
 	tirarTodosLosDados(dados,CANTIDAD_DE_DADOS)
@@ -74,8 +76,9 @@ Algoritmo tpLaboratorioGenerala
 		eleccionValida <- 0
 		elecciones<-""
 		Repetir //Para validar si la eleccion es valida
+			//mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
 			Escribir "Elija los dados que quiera volver a tirar."
-			Escribir "En caso de querer salir ingrese X."
+			Escribir "En caso de no querer elegir dados ingrese X."
 			Leer eleccion
 			eleccion <- Mayusculas(eleccion);
 			eleccionValida <- eleccionElegirDadoEsValida(eleccion)
@@ -94,17 +97,32 @@ Algoritmo tpLaboratorioGenerala
 		FinSi
 		contadorTiradas <- contadorTiradas + 1
 	Hasta Que esFaseDeTiradas = 0
+	escribirSeparador()
 	//Fin de la fase de "Eleccion de dados para volver a tirar"
 	//------------------------------------------------------------------------------------------------------------------------------------------------------
 	//Comienzo  de la fase de buscar puntajes y mostrar puntajes
-	//Definir hayEscalera, hayPoker, hayFull, hayGenerala como Entero
-	//hayEscalera <- hayEscalera(dados,CANTIDAD_DE_DADOS)
-	//hayPoker <- hayPoker(dados,CANTIDAD_DE_DADOS)
-	//hayFull <- hayFull(dados,CANTIDAD_DE_DADOS)
-	//hayGenerala <- hayGenerala(dados,CANTIDAD_DE_DADOS)
+	Definir tipoPuntajeElegido Como Caracter
+	Definir  tipoPuntajeElegidoEsValido  Como Entero
+	
+	
+	Repetir
+		mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
+		Leer tipoPuntajeElegido
+		tipoPuntajeElegidoEsValido <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntajeElegido, tablaDePuntajes,nroJugador)
+		si tipoPuntajeElegidoEsValido = 0 Entonces
+			Escribir "Opción no valida, vuelva a elegir"
+			Escribir ""
+		FinSi
+	Hasta Que  tipoPuntajeElegidoEsValido = 1
 	
 	//------------------------------------------------------------------------------------------------------------------------------------------------------	
-	
+	// Se anota el puntaje
+	Definir indiceTipoPuntaje, puntaje como entero
+	indiceTipoPuntaje <- obtenerPosicionDeLaTablaDePuntajes(tipoPuntajeElegido)
+	puntaje <- obtenerPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntajeElegido)
+	tablaDePuntajes[indiceTipoPuntaje,nroJugador] <- puntaje
+	mostrarTablaPuntaje(tablaDePuntajes, cantDePuntajes ,nroDeJugadores)
+	Escribir "Fin del turno"
 FinAlgoritmo
 
 
@@ -141,11 +159,11 @@ FinAlgoritmo
 
 
 
-SubAlgoritmo inicializarTablaDePuntajes(tablaDePuntajes, nroDeJugadores)
+SubAlgoritmo inicializarTablaDePuntajes(tablaDePuntajes, CANTIDAD_TIPOS_PUNTAJES ,nroDeJugadores)
 	Definir c,f Como Entero //(c de columnas y f de filas)
-	Para f<-0 Hasta 9 Con Paso 1 Hacer
+	Para f<-0 Hasta CANTIDAD_TIPOS_PUNTAJES-1 Con Paso 1 Hacer
 		Para c<-0 Hasta nroDeJugadores-1 Con Paso 1 Hacer
-			tablaDePuntajes(f,c)<- -1
+			tablaDePuntajes[f,c]<- -1
 		Fin Para
 	Fin Para
 FinSubAlgoritmo
@@ -333,7 +351,7 @@ subalgoritmo mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,
 	resultadoGenerala <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"G", tablaDePuntajes,nroJugador)
 	
 	aux <- puedeUnoPuntaje + puedeDosPuntaje + puedeTresPuntaje + puedeCuatroPuntaje + puedeCincoPuntaje + puedeSeisPuntaje + resultadoEscalera + resultadoFull + resultadoPoker + resultadoGenerala
-	
+	Escribir ""
 	si aux > 0 Entonces
 		Escribir  "Posibles Jugadas disponibles: "
 		si puedeUnoPuntaje = 1 Entonces 
@@ -370,7 +388,7 @@ subalgoritmo mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,
 	SiNo
 		Escribir  "No hay jugadas disponibles "
 	FinSi
-	
+	Escribir ""
 	
 FinSubAlgoritmo
 
@@ -459,10 +477,22 @@ Funcion indice <- obtenerPosicionDeLaTablaDePuntajes(opcionElegida)
 		"G": indice<- 9
 		De Otro Modo: indice<- -1
 	FinSegun
-	
 FinFuncion
 
+SubAlgoritmo escribirSeparador
+	Escribir "----------------------------------------------------------------------------"
+FinSubAlgoritmo
 
+SubAlgoritmo mostrarTablaPuntaje(tablaDePuntajes, cantDePuntajes ,nroDeJugadores)
+	definir i,j Como Entero
+	Para i <- 0 Hasta cantDePuntajes Con Paso 1 Hacer
+		Para j <- 0 Hasta nroDeJugadores Con Paso 1 Hacer
+			Escribir  tablaDePuntajes[i,j] , " " Sin Saltar
+		Fin Para
+		Escribir ""
+	Fin Para
+	
+FinSubAlgoritmo
 
 
 
