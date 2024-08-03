@@ -42,12 +42,12 @@ Algoritmo tpLaboratorioGenerala
 	
 	Dimension dados[5] 
 	
-	//dados[0] <- 5
-	//dados[1] <- 5
-	//dados[2] <- 6
+	//dados[0] <- 1
+	//dados[1] <- 2
+	//dados[2] <- 3
 	//dados[3] <- 4
 	//dados[4] <- 5
-	//mostrarDados(dados, CANTIDAD_DE_DADOS)
+	//mostrarDados(dados, CANTIDAD_DE_DADOS)	
 	//mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,1) 
 	
 	Escribir "Ingrese el nombre del primer jugador"
@@ -86,7 +86,11 @@ Algoritmo tpLaboratorioGenerala
 			
 			si eleccionValida = 1 Entonces
 				elecciones <- Concatenar(elecciones,eleccion)
+			SiNo
+				Escribir "Opción invalida. Por favor ingresela nuevamente"
+				Escribir ""
 			FinSi
+			
 		Hasta Que eleccion = "X"
 		
 		tirarDadosConEleccion(dados , elecciones)
@@ -109,6 +113,7 @@ Algoritmo tpLaboratorioGenerala
 	Repetir
 		mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
 		Leer tipoPuntajeElegido
+		tipoPuntajeElegido <- Mayusculas(tipoPuntajeElegido)
 		tipoPuntajeElegidoEsValido <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntajeElegido, tablaDePuntajes,nroJugador)
 		si tipoPuntajeElegidoEsValido = 0 Entonces
 			Escribir "Opción no valida, vuelva a elegir"
@@ -279,27 +284,27 @@ FinFuncion
 Funcion resultado <- hayPoker(dados, CANTIDAD_DE_DADOS)
 	resultado <- 0
 	definir i Como Entero
-	definir numeroUno, numeroDos, numeroTres, numeroCuatro, numeroCinco, numeroSeis Como Entero
-	numeroUno <- 0
-	numeroDos <- 0
-	numeroTres <- 0
-	numeroCuatro <- 0
-	numeroCinco <- 0
-	numeroSeis <- 0
+	definir contadorUno, contadorDos, contadorTres, contadorCuatro, contadorCinco, contadorSeis Como Entero
+	contadorUno <- 0
+	contadorDos <- 0
+	contadorTres <- 0
+	contadorCuatro <- 0
+	contadorCinco <- 0
+	contadorSeis <- 0
 	
 	
 	Para i <- 0 Hasta CANTIDAD_DE_DADOS - 1 Con Paso 1 Hacer
 		Segun dados[i] Hacer
-			1: numeroUno <- 1
-			2: numeroDos <- 1
-			3: numeroTres <- 1
-			4: numeroCuatro <- 1
-			5: numeroCinco <- 1
-			6: numeroSeis <- 1
+			1: contadorUno <- contadorUno + 1
+			2: contadorDos <- contadorDos + 1
+			3: contadorTres <- contadorTres + 1
+			4: contadorCuatro <- contadorCuatro + 1
+			5: contadorCinco <- contadorCinco + 1
+			6: contadorSeis <- contadorSeis + 1
 		Fin Segun
 	Fin Para
 	
-	si(numeroUno = numeroDos Y numeroUno = numeroTres Y numeroUno = numeroCuatro) O (numeroDos = numeroTres Y numeroDos = numeroCuatro Y numeroDos = numeroCinco) O (numeroUno = numeroTres Y numeroUno = numeroCuatro Y numeroUno = numeroCinco) O (numeroUno = numeroDos Y numeroUno = numeroTres Y numeroUno = numeroCinco) O (numeroUno = numeroDos Y numeroUno = numeroCuatro Y numeroUno = numeroCinco) Entonces
+	si contadorUno >= 4 o contadorDos >= 4 o contadorTres >= 4 o contadorCuatro >= 4 o contadorCinco >= 4
 		resultado <- 1
 	FinSi
 	
