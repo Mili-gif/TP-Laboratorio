@@ -17,14 +17,15 @@ Algoritmo tpLaboratorioGenerala
 	DADO_E <- "E"
 	OPC_DEJAR_DE_ELEGIR<- "X"
 	
-	Definir CANTIDAD_TIPOS_PUNTAJES, cantidadDeJugadores, NRO_DE_RONDAS como Entero
+	Definir CANTIDAD_TIPOS_PUNTAJES, CANTIDAD_RONDAS, cantidadDeJugadores, nroJugador, nroRonda  como Entero
 	CANTIDAD_TIPOS_PUNTAJES <- 10
-	NRO_DE_RONDAS <- 10
+	CANTIDAD_RONDAS <- 2
 	cantidadDeJugadores <- 2
+	nroJugador <- 1
+	nroRonda <- 1
 	
-	Definir jugador1, jugador2,eleccion Como Caracter
 	Definir fila, columna como Entero
-	Definir tablaDePuntajes, contadorTiradas como Entero
+	Definir tablaDePuntajes como Entero
 	
 	Dimension tablaDePuntajes[CANTIDAD_TIPOS_PUNTAJES,cantidadDeJugadores]
 	inicializarTablaDePuntajes(tablaDePuntajes, CANTIDAD_TIPOS_PUNTAJES, cantidadDeJugadores)
@@ -50,85 +51,55 @@ Algoritmo tpLaboratorioGenerala
 	//mostrarDados(dados, CANTIDAD_DE_DADOS)	
 	//mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,1) 
 	
-	Escribir "Ingrese el nombre del primer jugador"
-	Leer jugador1
-	Escribir "Ingrese el nombre del segundo jugador"
-	Leer jugador2
+	Definir nombresJugadores, nombreJugador Como Caracter 
+	Dimension nombresJugadores[cantidadDeJugadores]
 	
-	Definir nroJugador Como Entero
+	Para nroJugador <- 1 Hasta cantidadDeJugadores Con Paso 1 Hacer
+		Escribir "Ingrese el nombre del jugador ", nroJugador
+		Leer nombreJugador
+		nombresJugadores[nroJugador-1] <- nombreJugador
+	Fin Para
+	
 	nroJugador <- 1
-	//------------------------------------------------------------------------------------------------------------------------------------------------------
-	//Comienzo de Turno, se tiran todos los dados
-	tirarTodosLosDados(dados,CANTIDAD_DE_DADOS)
-	Escribir "Los resultados que salieron en cada dado fueron: "
-	mostrarDados(dados, CANTIDAD_DE_DADOS)
 	
-	//------------------------------------------------------------------------------------------------------------------------------------------------------
-	//Comienzo de la fase de "Eleccion de dados para volver a tirar"
-	//El usuario puede seleccionar los dados (ABCDE) que quiera volver a tirar (que pasa si vuelve a elegir un dado que ya elegió?)
-	//En caso de que quiera dejar de seleccionar los dados elije X y los dados que elegio se tiran
-	//Si no elegió ningun dado ó se terminaron sus tiradas dispobibles, se va a la fase de elegir puntuacion
-	Definir eleccionValida, esFaseDeTiradas Como Entero
-	Definir elecciones Como Caracter
-	esFaseDeTiradas <- 1
-	contadorTiradas <- 1
+	//Definicion de variables
 	
-	Repetir
-		eleccionValida <- 0
-		elecciones<-""
-		Repetir //Para validar si la eleccion es valida
-			//mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
-			Escribir "Elija los dados que quiera volver a tirar."
-			Escribir "En caso de no querer elegir dados ingrese X."
-			Leer eleccion
-			eleccion <- Mayusculas(eleccion);
-			eleccionValida <- eleccionElegirDadoEsValida(eleccion)
+	
+	
+	
+	Mientras nroRonda <= CANTIDAD_RONDAS Hacer
+		Mientras nroJugador <= cantidadDeJugadores Hacer
+			Escribir "Turno del jugador ", nroJugador, ": ", nombresJugadores[nroJugador-1]
 			
-			si eleccionValida = 1 Entonces
-				elecciones <- Concatenar(elecciones,eleccion)
-			SiNo
-				Escribir "Opción invalida. Por favor ingresela nuevamente"
-				Escribir ""
-			FinSi
+			//------------------------------------------------------------------------------------------------------------------------------------------------------
+			//Comienzo de Turno, se tiran todos los dados
+			tirarTodosLosDados(dados,CANTIDAD_DE_DADOS)
+			Escribir "Los resultados que salieron en cada dado fueron: "
+			mostrarDados(dados, CANTIDAD_DE_DADOS)
 			
-		Hasta Que eleccion = "X"
-		
-		tirarDadosConEleccion(dados , elecciones)
-		mostrarDados(dados,CANTIDAD_DE_DADOS)
-		si elecciones = "X" o contadorTiradas >= 2 Entonces
-			//Borrar Pantalla	
-			esFaseDeTiradas <- 0
-			
-		FinSi
-		contadorTiradas <- contadorTiradas + 1
-	Hasta Que esFaseDeTiradas = 0
-	escribirSeparador()
-	//Fin de la fase de "Eleccion de dados para volver a tirar"
-	//------------------------------------------------------------------------------------------------------------------------------------------------------
-	//Comienzo  de la fase de buscar puntajes y mostrar puntajes
-	Definir tipoPuntajeElegido Como Caracter
-	Definir  tipoPuntajeElegidoEsValido  Como Entero
-	
-	
-	Repetir
-		mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
-		Leer tipoPuntajeElegido
-		tipoPuntajeElegido <- Mayusculas(tipoPuntajeElegido)
-		tipoPuntajeElegidoEsValido <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntajeElegido, tablaDePuntajes,nroJugador)
-		si tipoPuntajeElegidoEsValido = 0 Entonces
-			Escribir "Opción no valida, vuelva a elegir"
+			//------------------------------------------------------------------------------------------------------------------------------------------------------
+			//Comienzo de la fase de "Eleccion de dados para volver a tirar"
+			//El usuario puede seleccionar los dados (ABCDE) que quiera volver a tirar (que pasa si vuelve a elegir un dado que ya elegió?)
+			//En caso de que quiera dejar de seleccionar los dados elije X y los dados que elegio se tiran
+			//Si no elegió ningun dado ó se terminaron sus tiradas dispobibles, se va a la fase de elegir puntuacion
+			comenzarFaseTiradaDeDados(dados, CANTIDAD_DE_DADOS)
+			//Fin de la fase de "Eleccion de dados para volver a tirar"
+			//------------------------------------------------------------------------------------------------------------------------------------------------------
+			//Comienzo  de la fase de buscar , mostrar puntajes y anotar puntaje 			
+			comenzarFaseBuscarYMostrarPuntajesYAnotarPuntaje(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador)
+			Borrar Pantalla
+			mostrarTablaPuntaje(tablaDePuntajes, CANTIDAD_TIPOS_PUNTAJES ,cantidadDeJugadores)
+			Escribir "Fin del turno"
+			escribirSeparador()
 			Escribir ""
-		FinSi
-	Hasta Que  tipoPuntajeElegidoEsValido = 1
+			
+			nroJugador <- nroJugador + 1
+		Fin Mientras
+		nroJugador <- 1 
+		nroRonda <- nroRonda + 1
+	Fin Mientras
 	
-	//------------------------------------------------------------------------------------------------------------------------------------------------------	
-	// Se anota el puntaje
-	Definir indiceTipoPuntaje, puntaje como entero
-	indiceTipoPuntaje <- obtenerPosicionDeLaTablaDePuntajes(tipoPuntajeElegido)
-	puntaje <- obtenerPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntajeElegido)
-	tablaDePuntajes[indiceTipoPuntaje,nroJugador-1] <- puntaje
-	mostrarTablaPuntaje(tablaDePuntajes, CANTIDAD_TIPOS_PUNTAJES ,cantidadDeJugadores)
-	Escribir "Fin del turno"
+	
 FinAlgoritmo
 
 
@@ -529,4 +500,66 @@ SubAlgoritmo mostrarTablaPuntaje(tablaDePuntajes, cantDePuntajes ,nroDeJugadores
 		Escribir Concatenar(filaTexto, aux)
 	Fin Para
 	
+FinSubAlgoritmo
+
+SubAlgoritmo comenzarFaseTiradaDeDados(dados, CANTIDAD_DE_DADOS )
+	Definir eleccionValida, esFaseDeTiradas, contadorTiradas Como Entero
+	Definir elecciones, eleccion Como Caracter
+	esFaseDeTiradas <- 1
+	contadorTiradas <- 1
+	
+	Repetir
+		eleccionValida <- 0
+		elecciones<-""
+		Repetir //Para validar si la eleccion es valida
+			//mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
+			Escribir "Elija los dados que quiera volver a tirar."
+			Escribir "En caso de no querer elegir dados ingrese X."
+			Leer eleccion
+			eleccion <- Mayusculas(eleccion);
+			eleccionValida <- eleccionElegirDadoEsValida(eleccion)
+			
+			si eleccionValida = 1 Entonces
+				elecciones <- Concatenar(elecciones,eleccion)
+			SiNo
+				Escribir "Opción invalida. Por favor ingresela nuevamente"
+				Escribir ""
+			FinSi
+			
+		Hasta Que eleccion = "X"
+		
+		tirarDadosConEleccion(dados , elecciones)
+		mostrarDados(dados,CANTIDAD_DE_DADOS)
+		si elecciones = "X" o contadorTiradas >= 2 Entonces
+			//Borrar Pantalla	
+			esFaseDeTiradas <- 0
+			
+		FinSi
+		contadorTiradas <- contadorTiradas + 1
+	Hasta Que esFaseDeTiradas = 0
+	escribirSeparador()
+FinSubAlgoritmo
+
+
+//fase de buscar puntajes y mostrar puntajes
+SubAlgoritmo comenzarFaseBuscarYMostrarPuntajesYAnotarPuntaje(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador)
+	Definir tipoPuntajeElegido Como Caracter
+	Definir  tipoPuntajeElegidoEsValido  Como Entero
+	Repetir
+		mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
+		Leer tipoPuntajeElegido
+		tipoPuntajeElegido <- Mayusculas(tipoPuntajeElegido)
+		tipoPuntajeElegidoEsValido <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntajeElegido, tablaDePuntajes,nroJugador)
+		si tipoPuntajeElegidoEsValido = 0 Entonces
+			Escribir "Opción no valida, vuelva a elegir"
+			Escribir ""
+		FinSi
+	Hasta Que  tipoPuntajeElegidoEsValido = 1
+	
+	//------------------------------------------------------------------------------------------------------------------------------------------------------	
+	//Anotacion del puntaje elegido
+	Definir indiceTipoPuntaje, puntaje como entero
+	indiceTipoPuntaje <- obtenerPosicionDeLaTablaDePuntajes(tipoPuntajeElegido)
+	puntaje <- obtenerPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntajeElegido)
+	tablaDePuntajes[indiceTipoPuntaje,nroJugador-1] <- puntaje
 FinSubAlgoritmo
