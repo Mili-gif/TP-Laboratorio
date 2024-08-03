@@ -39,7 +39,7 @@ Algoritmo tpLaboratorioGenerala
 	//Fila 8 para puntos de Poker
 	//Fila 9 para puntos de Generala
 	
-
+	
 	Dimension dados[5] 
 	
 	//dados[0] <- 5
@@ -270,7 +270,7 @@ Funcion resultado <- hayEscalera(dados, CANTIDAD_DE_DADOS)
 			6: hayNroSeis <- 1
 		Fin Segun
 	Fin Para
-
+	
 	Si (hayNroUno = 1 y hayNroDos = 1 y hayNroTres = 1 y hayNroCuatro = 1 y hayNroCinco = 1) o (hayNroDos = 1 y hayNroTres = 1 y hayNroCuatro = 1 y hayNroCinco = 1 y hayNroSeis = 1) Entonces
 		resultado <- 1
 	FinSi
@@ -337,6 +337,13 @@ Funcion resultado <- hayFull (dados, CANTIDAD_DE_DADOS)
     FinSi
 Fin Funcion
 
+Funcion resultado <- hayGenerala(dados)
+	resultado <- 0
+	si(dados[0]=dados[1] Y dados[0]=dados[2] Y dados[0]=dados[3] Y dados[0]=dados[4] Y dados[0]=dados[5]) Entonces
+		resultado <- 1
+	FinSi
+	
+FinFuncion
 subalgoritmo mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
 	definir puedeUnoPuntaje, puedeDosPuntaje, puedeTresPuntaje, puedeCuatroPuntaje, puedeCincoPuntaje, puedeSeisPuntaje, resultadoEscalera, resultadoFull, resultadoPoker, resultadoGenerala  Como Entero
 	definir aux  Como Entero
@@ -398,7 +405,7 @@ Funcion resultado <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntaje, tab
 	yaTienePuntaje <- 0
 	tipoPuntajePuedeAnotar <- 0
 	indicePuntaje <- obtenerPosicionDeLaTablaDePuntajes(tipoPuntaje)
-	si tablaDePuntajes[indicePuntaje,nroJugador-1] = -1 Entonces
+	si indicePuntaje <> -1 y tablaDePuntajes[indicePuntaje,nroJugador-1] = -1 Entonces
 		Segun tipoPuntaje Hacer
 			"1": tipoPuntajePuedeAnotar <- existeNro(dados,CANTIDAD_DE_DADOS,1)
 			"2": tipoPuntajePuedeAnotar <- existeNro(dados,CANTIDAD_DE_DADOS,2)
@@ -408,8 +415,8 @@ Funcion resultado <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntaje, tab
 			"6": tipoPuntajePuedeAnotar <- existeNro(dados,CANTIDAD_DE_DADOS,6)
 			"E": tipoPuntajePuedeAnotar <- hayEscalera(dados,CANTIDAD_DE_DADOS)
 			"F": tipoPuntajePuedeAnotar <- hayFull(dados,CANTIDAD_DE_DADOS)
-			"P": tipoPuntajePuedeAnotar <- 0//hayPoker(dados,CANTIDAD_DE_DADOS)
-			"G": tipoPuntajePuedeAnotar <- 0//hayPoker(dados,CANTIDAD_DE_DADOS)
+			"P": tipoPuntajePuedeAnotar <- hayPoker(dados,CANTIDAD_DE_DADOS)
+			"G": tipoPuntajePuedeAnotar <- hayGenerala(dados)
 			De Otro Modo: tipoPuntajePuedeAnotar <- 0
 		Fin Segun
 	SiNo
@@ -485,28 +492,36 @@ SubAlgoritmo escribirSeparador
 FinSubAlgoritmo
 
 SubAlgoritmo mostrarTablaPuntaje(tablaDePuntajes, cantDePuntajes ,nroDeJugadores)
-	definir i,j, puntaje Como Entero
-	definir valorPuntaje, aux Como Caracter
+	definir i,j, puntaje, cont Como Entero
+	definir valorPuntaje, aux, filaTexto Como Caracter
+	Dimension etiquetasDePuntajes[cantDePuntajes]
+	etiquetasDePuntajes[0] <- "   1       "
+	etiquetasDePuntajes[1] <- "   2       "
+	etiquetasDePuntajes[2] <- "   3       "
+	etiquetasDePuntajes[3] <- "   4       "
+	etiquetasDePuntajes[4] <- "   5       "
+	etiquetasDePuntajes[5] <- "   6       "
+	etiquetasDePuntajes[6] <- "Escalera   "
+	etiquetasDePuntajes[7] <- " Full      "
+	etiquetasDePuntajes[8] <- " Poker     "
+	etiquetasDePuntajes[9] <- "Generala   "
 	
 	Para i <- 0 Hasta cantDePuntajes-1 Con Paso 1 Hacer
+		filaTexto <- ""
+		aux <- " "
+		filaTexto <- Concatenar(filaTexto, etiquetasDePuntajes[i])
 		Para j <- 0 Hasta nroDeJugadores-1 Con Paso 1 Hacer
 			puntaje <- tablaDePuntajes[i,j]
 			si puntaje = -1 Entonces
 				valorPuntaje <- "-"
 			SiNo
 				valorPuntaje <- ConvertirATexto(puntaje)
-				//valorPuntaje <-Concatenar(" ",aux) 
-				//valorPuntaje <-Concatenar(aux," ") 
 			FinSi
+			aux <- Concatenar(aux,valorPuntaje) 
+			aux <- Concatenar(aux," ") 
 			
-			Escribir  " ",valorPuntaje," " Sin Saltar
 		Fin Para
-		Escribir ""
+		Escribir Concatenar(filaTexto, aux)
 	Fin Para
 	
 FinSubAlgoritmo
-
-
-
-
-
