@@ -7,13 +7,15 @@ Algoritmo juegoDelDiezMil
 	Definir  puntosNormales Como Entero
 	Definir puntosTirada Como Entero
 	Definir puntosEscalera Como Entero
+	Definir llegoAMilPts como Entero
+	llegoAMilPts <- 0
 	puntosEscalera <- 0
-	puntosTirada<-0
+	puntosTirada <-0
 	CANTIDAD_DE_DADOS <- 5
 	Dimension dados[5] 
 	dados[0] <- 1
 	dados[1] <- 2
-	dados[2] <- 3
+	dados[2] <- 6
 	dados[3] <- 5
 	dados[4] <- 4
 	//LLAMADO DE FUNCIONES!!
@@ -21,14 +23,27 @@ Algoritmo juegoDelDiezMil
 	mostrarDados(dados, CANTIDAD_DE_DADOS)
 	hayTresIguales <- hayTresDadosIguales(dados, CANTIDAD_DE_DADOS) //ES UNA BANDERA
 	puntosEscalera <- hayEscalera(dados, CANTIDAD_DE_DADOS) //ES UNA BANDERA
-	Si hayTresIguales = 1 Entonces
-		puntosEspeciales <- obtienePuntosEspeciales(dados, CANTIDAD_DE_DADOS)
-		puntosTirada <- puntosPrueba(dados, CANTIDAD_DE_DADOS) + puntosEspeciales
+	llegoAMilPts <- puedeAnotarONo(puntosTirada) //ES UNA BANDERA
+	
+	Si (hayTresIguales = 1) o (hayEscalera(dados, CANTIDAD_DE_DADOS)=1) Entonces
+		Si(hayTresIguales = 1) Entonces
+			puntosEspeciales <- obtienePuntosEspeciales(dados, CANTIDAD_DE_DADOS)
+			puntosTirada <- puntosPrueba(dados, CANTIDAD_DE_DADOS) + puntosEspeciales
+		SiNo
+			puntosEspeciales <- obtienePuntosEspeciales(dados, CANTIDAD_DE_DADOS)
+			puntosTirada <- puntosEspeciales
+		FinSi
+		
 		Mostrar "Usted hizo ",puntosTirada
 	SiNo
 		puntosNormales<- puntosParcialesTiradaSinPuntajeEspecial(dados, CANTIDAD_DE_DADOS)
 		puntosTirada <- puntosNormales + puntosTirada
 		Mostrar "Usted hizo ",puntosTirada
+	FinSi
+	Si ( puedeAnotarONo(puntosTirada)=1) Entonces
+		Mostrar "Usted puede anotar, usted hizo: ", puntosTirada
+	SiNo
+		Mostrar "Usted aun no puede anotar, hizo: ", puntosTirada
 	FinSi
 FinAlgoritmo
 
@@ -225,6 +240,16 @@ Funcion resultado <- hayEscalera(dados, CANTIDAD_DE_DADOS) //BANDERA PARA VER SI
 	
 	Si (hayNroUno = 1 y hayNroDos = 1 y hayNroTres = 1 y hayNroCuatro = 1 y hayNroCinco = 1) o (hayNroDos = 1 y hayNroTres = 1 y hayNroCuatro = 1 y hayNroCinco = 1 y hayNroSeis = 1) Entonces
 		resultado <- 1
+	FinSi
+FinFuncion
+
+Funcion resultado <- puedeAnotarONo(puntosTirada)
+	Definir resultado Como Entero
+	resultado <- 0
+	Si (puntosTirada>= 1000) Entonces
+		resultado <- 1
+	SiNo
+		resultado <- 0
 	FinSi
 FinFuncion
 	
