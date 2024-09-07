@@ -8,27 +8,35 @@ Algoritmo juegoDelDiezMil
 	Definir puntosTirada Como Entero
 	Definir puntosEscalera Como Entero
 	Definir llegoAMilPts como Entero
+	Definir opcionDadoElegida Como Caracter
+	Definir posicionDado Como Entero
+	Definir puedeTirarDado Como Entero
+	Definir vecContador Como Entero
+
+	Dimension vecContador[6]
 	llegoAMilPts <- 0
 	puntosEscalera <- 0
 	puntosTirada <-0
 	CANTIDAD_DE_DADOS <- 5
 	Dimension dados[5] 
-	dados[0] <- 1
-	dados[1] <- 2
-	dados[2] <- 6
-	dados[3] <- 5
-	dados[4] <- 4
+//	dados[0] <- 1
+//	dados[1] <- 1
+//	dados[2] <- 1
+//	dados[3] <- 1
+//	dados[4] <- 1
 	//LLAMADO DE FUNCIONES!!
-	//tirarTodosLosDados(dados, CANTIDAD_DE_DADOS)
+	tirarTodosLosDados(dados, CANTIDAD_DE_DADOS)
 	mostrarDados(dados, CANTIDAD_DE_DADOS)
-	hayTresIguales <- hayTresDadosIguales(dados, CANTIDAD_DE_DADOS) //ES UNA BANDERA
+	contadoresDeTodosLosDados(dados, CANTIDAD_DE_DADOS, vecContador)
+	hayTresIguales <- hayTresDadosIguales(dados, CANTIDAD_DE_DADOS, vecContador) //ES UNA BANDERA
 	puntosEscalera <- hayEscalera(dados, CANTIDAD_DE_DADOS) //ES UNA BANDERA
 	llegoAMilPts <- puedeAnotarONo(puntosTirada) //ES UNA BANDERA
-	
-	Si (hayTresIguales = 1) o (hayEscalera(dados, CANTIDAD_DE_DADOS)=1) Entonces
+	mostrar "bandera hayTresIguales" , hayTresIguales
+	Si (hayTresIguales = 1) o (puntosEscalera=1) Entonces
 		Si(hayTresIguales = 1) Entonces
 			puntosEspeciales <- obtienePuntosEspeciales(dados, CANTIDAD_DE_DADOS)
 			puntosTirada <- puntosPrueba(dados, CANTIDAD_DE_DADOS) + puntosEspeciales
+			
 		SiNo
 			puntosEspeciales <- obtienePuntosEspeciales(dados, CANTIDAD_DE_DADOS)
 			puntosTirada <- puntosEspeciales
@@ -36,7 +44,7 @@ Algoritmo juegoDelDiezMil
 		
 		Mostrar "Usted hizo ",puntosTirada
 	SiNo
-		puntosNormales<- puntosParcialesTiradaSinPuntajeEspecial(dados, CANTIDAD_DE_DADOS)
+		puntosNormales<- puntosParcialesTiradaSinPuntajeEspecial(dados, CANTIDAD_DE_DADOS,vecContador)
 		puntosTirada <- puntosNormales + puntosTirada
 		Mostrar "Usted hizo ",puntosTirada
 	FinSi
@@ -45,6 +53,35 @@ Algoritmo juegoDelDiezMil
 	SiNo
 		Mostrar "Usted aun no puede anotar, hizo: ", puntosTirada
 	FinSi
+	
+	//contadoresDeTodosLosDados(dados, CANTIDAD_DE_DADOS, vecContador)
+	//Tirada de dados con eleccion del usuario 
+	
+//	repetir
+//		Escribir "Elija el dado que desea volver a tirar y X para salir:"
+//		leer opcionDadoElegida
+//		opcionDadoElegida<-Mayusculas(opcionDadoElegida)
+//		
+//		si opcionDadoElegida <> 'X' Entonces
+//			posicionDado<-obtenerPosicionPorLetraDado(opcionDadoElegida)
+//			puedeTirarDado<-puedeVolverATirarDado(dados, CANTIDAD_DE_DADOS, posicionDado)
+//			
+//			si puedeTirarDado = 1  Entonces
+//				//tira el dado elegido
+//				dados[posicionDado]<-tirarDado
+//			sino si hayEscalera(dados, CANTIDAD_DE_DADOS)=1 Entonces
+//					tirarTodosLosDados(dados, CANTIDAD_DE_DADOS)
+//				SiNo
+//					//no tira el dado
+//					Escribir "usted no puede volver a tirar ese dado "
+//				FinSi
+//			FinSi	
+//			 
+//		FinSi
+//	Hasta Que opcionDadoElegida = 'X'
+//	mostrarDados(dados, CANTIDAD_DE_DADOS)
+	
+	
 FinAlgoritmo
 
 SubAlgoritmo tirarTodosLosDados(dados, CANTIDAD_DE_DADOS)
@@ -75,52 +112,28 @@ SubAlgoritmo mostrarDados(dados, CANTIDAD_DE_DADOS)
 	Fin Para
 FinSubAlgoritmo
 
-Funcion puntosParcialesPorTirada <- puntosParcialesTiradaSinPuntajeEspecial(dados, CANTIDAD_DE_DADOS)//FUNCION  PASA LOS PUNTOS POR PARTIDA SIN PUNTAJE ESPECIAL
+Funcion puntosParcialesPorTirada <- puntosParcialesTiradaSinPuntajeEspecial(dados, CANTIDAD_DE_DADOS,vecContador)//FUNCION  PASA LOS PUNTOS POR PARTIDA SIN PUNTAJE ESPECIAL
 	Definir i Como Entero
-	Definir puntosConDadoUno Como Entero
-	Definir puntosConDadoCinco Como Entero
-	Definir puntosParcialesPorTirada Como Entero
-	Definir contadorUno, contadorDos, contadorTres, contadorCuatro, contadorCinco, contadorSeis Como Entero
+	Definir puntosConDadoUno , puntosConDadoCinco , puntosParcialesPorTirada Como Entero
 	//Inicializar todas las variables con 0.
 	
-	Para i<- 0 hasta CANTIDAD_DE_DADOS-1 con Paso 1 Hacer
-        Segun dados[i]  Hacer
-			1: contadorUno<- contadorUno +1
-			5: contadorCinco<- contadorCinco+1
-		FinSegun
-	FinPara
-	
-	Si(contadorUno>=1 y contadorUno<=2) o (contadorCinco >=1 y contadorCinco <=2) Entonces
-		puntosConDadoUno<- (contadorUno*100)
-		puntosConDadoCinco<- (contadorCinco*50)
+	Si(vecContador[0]>=1 y vecContador[0]<=2) o (vecContador[4] >=1 y vecContador[4] <=2) Entonces
+		puntosConDadoUno<- (vecContador[0]*100)
+		puntosConDadoCinco<- (vecContador[4]*50)
 		puntosParcialesPorTirada<- puntosConDadoUno+puntosConDadoCinco
 	sino
 		puntosParcialesPorTirada<-0
 	FinSi
 FinFuncion
 
-Funcion resultado <- hayTresDadosIguales(dados, CANTIDAD_DE_DADOS)//FUNCION PASA LOS PUNTOS ESPECIALES POR PARTIDA
+Funcion resultado <- hayTresDadosIguales(dados, CANTIDAD_DE_DADOS, vecContador)//FUNCION PASA LOS PUNTOS ESPECIALES POR PARTIDA
 	definir i Como Entero
 	definir resultado Como Entero
-	definir puntosParcialesPorTirada Como Entero
-	definir contadorUno, contadorDos, contadorTres, contadorCuatro, contadorCinco, contadorSeis Como Entero
-	//Inicializar todas las variables con 0.
 	
-	Para i<- 0 hasta CANTIDAD_DE_DADOS-1 con Paso 1 Hacer
-        Segun dados[i]  Hacer
-			1: contadorUno<- contadorUno +1
-			2: contadorDos<- contadorDos+1
-			3: contadorTres<- contadorTres+1
-			4: contadorCuatro<- contadorCuatro+1
-			5: contadorCinco<- contadorCinco+1
-			6: contadorSeis <- contadorSeis +1
-		FinSegun
-	FinPara
-	
-	Si(contadorUno >=3 o contadorDos >=3 o contadorTres >=3 o contadorCuatro >=3 o contadorCinco >=3 o contadorSeis >=3) Entonces
-		resultado <- 1
-	sino 
-		resultado <- 0
+	si (vecContador[1] >= 3) o (vecContador[2] >= 3) o (vecContador[3] >= 3) o (vecContador[4] >= 3) o (vecContador[5] >= 3)  o (vecContador[0] >= 3) Entonces
+		resultado<- 1
+	SiNo
+		resultado<- 0
 	FinSi
 FinFuncion
 
@@ -129,7 +142,7 @@ Funcion puntosEspeciales <- obtienePuntosEspeciales(dados, CANTIDAD_DE_DADOS)
 	Definir puntosEspeciales Como Entero
 	Definir contadorUno, contadorDos, contadorTres, contadorCuatro, contadorCinco, contadorSeis Como Entero	
 	//Inicializo todas las anteriores variables en 0.
-	Si (hayTresDadosIguales(dados, CANTIDAD_DE_DADOS)=1) Entonces
+	Si (hayTresDadosIguales(dados, CANTIDAD_DE_DADOS, vecContador)=1) Entonces
 		Para i <- 0 hasta CANTIDAD_DE_DADOS-1 con Paso 1 Hacer
 			Segun dados[i] Hacer
 				1: 
@@ -252,4 +265,66 @@ Funcion resultado <- puedeAnotarONo(puntosTirada)
 		resultado <- 0
 	FinSi
 FinFuncion
+
+Funcion posicion <- obtenerPosicionPorLetraDado(opcionDadoElegida)
+	Segun opcionDadoElegida Hacer
+		"A": posicion<-0
+		"B": posicion<-1
+		"C": posicion<-2
+		"D": posicion<-3
+		"E": posicion<-4
+		De Otro Modo: posicion<--1
+	Fin Segun
+Fin Funcion 
+
+SubAlgoritmo contadoresDeTodosLosDados(dados, CANTIDAD_DE_DADOS, vecContador)
 	
+	Para i<- 0 hasta CANTIDAD_DE_DADOS-1 con Paso 1 Hacer
+		Segun dados[i]  Hacer
+			1: vecContador[1-1]<-vecContador[1-1]  +1
+			2: vecContador[2-1]<- vecContador[2-1]+1
+			3: vecContador[3-1]<- vecContador[3-1]+1
+			4: vecContador[4-1]<- vecContador[4-1]+1
+			5: vecContador[5-1]<- vecContador[5-1]+1
+			6: vecContador[6-1] <- vecContador[6-1] +1
+		FinSegun
+	FinPara
+	Para  i<- 0 hasta CANTIDAD_DE_DADOS con Paso 1 Hacer
+		Mostrar "la cantidad de veces que salio el numero " , i+1 , " son " ,  vecContador[i]
+	Fin Para
+FinSubAlgoritmo
+Funcion res<-puedeVolverATirarDado(dados, CANTIDAD_DE_DADOS, posicionDado)
+	Para i<- 0 hasta CANTIDAD_DE_DADOS-1 con Paso 1 Hacer
+		Segun dados[i]  Hacer
+			1: contadorUno<- contadorUno +1
+			2: contadorDos<- contadorDos+1
+			3: contadorTres<- contadorTres+1
+			4: contadorCuatro<- contadorCuatro+1
+			5: contadorCinco<- contadorCinco+1
+			6: contadorSeis <- contadorSeis +1
+		FinSegun
+	FinPara 
+	Segun dados[posicionDado] Hacer
+		1: si contadorUno >= 0 entonces 
+				res<-0
+			FinSi
+		2: si contadorDos < 3  entonces 
+				res<-1
+			FinSi
+		3: si contadorTres < 3 entonces 
+				res<-1
+			FinSi
+		4: si contadorCuatro < 3 entonces 
+				res<-1
+			FinSi
+		5: si contadorCinco >= 0 entonces 
+				res<-0
+			FinSi
+		6: si contadorSeis < 3 entonces 
+				res<-1
+			FinSi 
+	FinSegun
+FinFuncion
+
+
+ 
