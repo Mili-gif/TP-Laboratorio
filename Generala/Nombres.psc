@@ -82,7 +82,7 @@ Algoritmo tpLaboratorioGenerala
 			//El usuario puede seleccionar los dados (ABCDE) que quiera volver a tirar (que pasa si vuelve a elegir un dado que ya elegió?)
 			//En caso de que quiera dejar de seleccionar los dados elije X y los dados que elegio se tiran
 			//Si no elegió ningun dado ó se terminaron sus tiradas dispobibles, se va a la fase de elegir puntuacion
-			comenzarFaseTiradaDeDados(dados, CANTIDAD_DE_DADOS)
+			comenzarFaseTiradaDeDados(dados, CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador)
 			//Fin de la fase de "Eleccion de dados para volver a tirar"
 			//------------------------------------------------------------------------------------------------------------------------------------------------------
 			//Comienzo  de la fase de buscar , mostrar puntajes y anotar puntaje 			
@@ -320,53 +320,107 @@ Funcion resultado <- hayGenerala(dados)
 	FinSi
 	
 FinFuncion
-subalgoritmo mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
+
+subalgoritmo mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador, esDuranteTirada) 
 	definir puedeUnoPuntaje, puedeDosPuntaje, puedeTresPuntaje, puedeCuatroPuntaje, puedeCincoPuntaje, puedeSeisPuntaje, resultadoEscalera, resultadoFull, resultadoPoker, resultadoGenerala  Como Entero
 	definir aux  Como Entero
-	puedeUnoPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"1", tablaDePuntajes,nroJugador)
-	puedeDosPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"2", tablaDePuntajes,nroJugador)
-	puedeTresPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"3", tablaDePuntajes,nroJugador)
-	puedeCuatroPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"4", tablaDePuntajes,nroJugador)
-	puedeCincoPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"5", tablaDePuntajes,nroJugador)
-	puedeSeisPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"6", tablaDePuntajes,nroJugador)
-	resultadoEscalera <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"E", tablaDePuntajes,nroJugador)
-	resultadoFull <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"F", tablaDePuntajes,nroJugador)
-	resultadoPoker <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"P", tablaDePuntajes,nroJugador)
-	resultadoGenerala <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"G", tablaDePuntajes,nroJugador)
+	definir auxMensaje, puntajeMsj , tipoPuntaje Como Caracter
+	
+	puedeUnoPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"1", tablaDePuntajes,nroJugador,esDuranteTirada )
+	puedeDosPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"2", tablaDePuntajes,nroJugador,esDuranteTirada )
+	puedeTresPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"3", tablaDePuntajes,nroJugador,esDuranteTirada )
+	puedeCuatroPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"4", tablaDePuntajes,nroJugador,esDuranteTirada )
+	puedeCincoPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"5", tablaDePuntajes,nroJugador,esDuranteTirada )
+	puedeSeisPuntaje <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"6", tablaDePuntajes,nroJugador,esDuranteTirada )
+	resultadoEscalera <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"E", tablaDePuntajes,nroJugador,esDuranteTirada )
+	resultadoFull <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"F", tablaDePuntajes,nroJugador,esDuranteTirada )
+	resultadoPoker <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"P", tablaDePuntajes,nroJugador,esDuranteTirada )
+	resultadoGenerala <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"G", tablaDePuntajes,nroJugador,esDuranteTirada )
 	
 	aux <- puedeUnoPuntaje + puedeDosPuntaje + puedeTresPuntaje + puedeCuatroPuntaje + puedeCincoPuntaje + puedeSeisPuntaje + resultadoEscalera + resultadoFull + resultadoPoker + resultadoGenerala
 	Escribir ""
 	si aux > 0 Entonces
-		Escribir  "Posibles Jugadas disponibles: "
+		//Escribir  "Posibles Jugadas disponibles: "
 		si puedeUnoPuntaje = 1 Entonces 
-			Escribir "1 - Puntos con 1 (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"1"),")"  
+			auxMensaje <- "Puntos con 1 (" + ConvertirATexto(obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"1")) + ")"  
+			si(esDuranteTirada = 0) Entonces
+				auxMensaje  <- "1 - " + auxMensaje
+			FinSi
+			Escribir auxMensaje
+			auxMensaje <- ""
 		FinSi
 		si puedeDosPuntaje = 1 Entonces 
-			Escribir "2 - Puntos con 2 (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"2"),")"  
+			auxMensaje <- "Puntos con 2 (" + ConvertirATexto(obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"2")) + ")"  
+			si(esDuranteTirada = 0) Entonces
+				auxMensaje  <- "2 - " + auxMensaje
+			FinSi
+			Escribir auxMensaje
+			auxMensaje <- ""
 		FinSi
 		si puedeTresPuntaje = 1 Entonces 
-			Escribir "3 - Puntos con 3 (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"3"),")"  
+			auxMensaje <- "Puntos con 3 (" + ConvertirATexto(obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"3")) + ")"  
+			si(esDuranteTirada = 0) Entonces
+				auxMensaje  <- "3 - " + auxMensaje
+			FinSi
+			Escribir auxMensaje
+			auxMensaje <- ""
 		FinSi
 		si puedeCuatroPuntaje = 1 Entonces 
-			Escribir "4 - Puntos con 4 (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"4"),")"  
+			auxMensaje <- "Puntos con 4 (" + ConvertirATexto(obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"4")) + ")"  
+			si(esDuranteTirada = 0) Entonces
+				auxMensaje  <- "4 - " + auxMensaje
+			FinSi
+			Escribir auxMensaje
+			auxMensaje <- ""
 		FinSi
 		si puedeCincoPuntaje = 1 Entonces 
-			Escribir "5 - Puntos con 5 (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"5"),")"  
+			auxMensaje <- "Puntos con 5 (" + ConvertirATexto(obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"5")) + ")"  
+			si(esDuranteTirada = 0) Entonces
+				auxMensaje  <- "5 - " + auxMensaje
+			FinSi
+			Escribir auxMensaje
+			auxMensaje <- ""
 		FinSi
 		si puedeSeisPuntaje = 1 Entonces 
-			Escribir "6 - Puntos con 6 (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"6"),")"  
+			auxMensaje <- "Puntos con 6 (" + ConvertirATexto(obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"6")) + ")"  
+			si(esDuranteTirada = 0) Entonces
+				auxMensaje  <- "6 - " + auxMensaje
+			FinSi
+			Escribir auxMensaje
+			auxMensaje <- ""
 		FinSi
 		si resultadoEscalera = 1 Entonces 
-			Escribir "E - Escalera (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"E"),")"  
+			
+			auxMensaje <- "Escalera (" + ConvertirATexto(obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"E")) + ")"  
+			si(esDuranteTirada = 0) Entonces
+				auxMensaje  <- "E - " + auxMensaje
+			FinSi
+			Escribir auxMensaje
+			auxMensaje <- ""
 		FinSi
 		si resultadoFull = 1 Entonces 
-			Escribir "F - Full (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"F"),")"  
+			auxMensaje <- "Full (" + ConvertirATexto(obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"F")) + ")"  
+			si(esDuranteTirada = 0) Entonces
+				auxMensaje  <- "F - " + auxMensaje
+			FinSi
+			Escribir auxMensaje
+			auxMensaje <- ""
 		FinSi
 		si resultadoPoker = 1 Entonces 
-			Escribir "P - Poker (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"P"),")"  
+			auxMensaje <- "Poker (" + ConvertirATexto(obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"P")) + ")"  
+			si(esDuranteTirada = 0) Entonces
+				auxMensaje  <- "P - " + auxMensaje
+			FinSi
+			Escribir auxMensaje
+			auxMensaje <- ""
 		FinSi
 		si resultadoGenerala = 1 Entonces 
-			Escribir "G - Generala (",obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"G"),")"  
+			auxMensaje <- "Generala (" + ConvertirATexto(obtenerPuntaje(dados,CANTIDAD_DE_DADOS,"G")) + ")"  
+			si(esDuranteTirada = 0) Entonces
+				auxMensaje  <- "G - " + auxMensaje
+			FinSi
+			Escribir auxMensaje
+			auxMensaje <- ""
 		FinSi
 		
 	SiNo
@@ -376,7 +430,10 @@ subalgoritmo mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,
 	
 FinSubAlgoritmo
 
-Funcion resultado <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntaje, tablaDePuntajes,nroJugador)
+
+
+
+Funcion resultado <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntaje, tablaDePuntajes,nroJugador,esDuranteTiradas)
 	definir yaTienePuntaje, indicePuntaje, tipoPuntajePuedeAnotar como entero
 	yaTienePuntaje <- 0
 	tipoPuntajePuedeAnotar <- 0
@@ -399,11 +456,20 @@ Funcion resultado <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntaje, tab
 		yaTienePuntaje <- 1
 	FinSi
 	
-	si yaTienePuntaje = 1 o tipoPuntajePuedeAnotar = 0
-		resultado <- 0
-	sino
-		resultado <- 1
+	si esDuranteTiradas = 1 Entonces
+		si yaTienePuntaje = 1 o tipoPuntajePuedeAnotar = 0
+			resultado <- 0
+		sino
+			resultado <- 1
+		FinSi
+	SiNo
+		si yaTienePuntaje = 1 
+			resultado <- 0
+		sino
+			resultado <- 1
+		FinSi
 	FinSi
+	
 	
 FinFuncion
 
@@ -435,10 +501,30 @@ Funcion puntaje  <-  obtenerPuntaje(dados,CANTIDAD_DE_DADOS,opcionElegida)
 					puntaje <- puntaje + nro
 				FinSi
 			Fin Para
-		"E": puntaje <- 20
-		"F": puntaje <- 30
-		"P": puntaje <- 40
-		"G": puntaje <- 50
+		"E": 
+			si hayEscalera(dados, CANTIDAD_DE_DADOS) = 1 Entonces
+				puntaje <- 20
+			sino 
+				puntaje <- 0
+			FinSi
+		"F": 
+			si hayFull(dados, CANTIDAD_DE_DADOS) = 1 Entonces
+				puntaje <- 30
+			sino 
+				puntaje <- 0
+			FinSi
+		"P":
+			si hayPoker(dados, CANTIDAD_DE_DADOS) = 1 Entonces
+				puntaje <- 40
+			sino 
+				puntaje <- 0
+			FinSi
+		"G":
+			si hayGenerala(dados) = 1 Entonces
+				puntaje <- 50
+			sino 
+				puntaje <- 0
+			FinSi
 		De Otro Modo:
 			puntaje <- -1
 	Fin Segun
@@ -502,7 +588,7 @@ SubAlgoritmo mostrarTablaPuntaje(tablaDePuntajes, cantDePuntajes ,nroDeJugadores
 	
 FinSubAlgoritmo
 
-SubAlgoritmo comenzarFaseTiradaDeDados(dados, CANTIDAD_DE_DADOS )
+SubAlgoritmo comenzarFaseTiradaDeDados(dados, CANTIDAD_DE_DADOS, tablaDePuntajes, nroJugador )
 	Definir eleccionValida, esFaseDeTiradas, contadorTiradas Como Entero
 	Definir elecciones, eleccion Como Caracter
 	esFaseDeTiradas <- 1
@@ -512,7 +598,8 @@ SubAlgoritmo comenzarFaseTiradaDeDados(dados, CANTIDAD_DE_DADOS )
 		eleccionValida <- 0
 		elecciones<-""
 		Repetir //Para validar si la eleccion es valida
-			//mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
+			Escribir "Jugadas con puntajes"
+			mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador,1) 
 			Escribir "Elija los dados que quiera volver a tirar."
 			Escribir "En caso de no querer elegir dados ingrese X."
 			Leer eleccion
@@ -530,6 +617,7 @@ SubAlgoritmo comenzarFaseTiradaDeDados(dados, CANTIDAD_DE_DADOS )
 		
 		tirarDadosConEleccion(dados , elecciones)
 		mostrarDados(dados,CANTIDAD_DE_DADOS)
+		
 		si elecciones = "X" o contadorTiradas >= 2 Entonces
 			//Borrar Pantalla	
 			esFaseDeTiradas <- 0
@@ -546,10 +634,11 @@ SubAlgoritmo comenzarFaseBuscarYMostrarPuntajesYAnotarPuntaje(dados,CANTIDAD_DE_
 	Definir tipoPuntajeElegido Como Caracter
 	Definir  tipoPuntajeElegidoEsValido  Como Entero
 	Repetir
-		mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador) 
+		Escribir  "Posibles Jugadas disponibles: "
+		mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador,0) 
 		Leer tipoPuntajeElegido
 		tipoPuntajeElegido <- Mayusculas(tipoPuntajeElegido)
-		tipoPuntajeElegidoEsValido <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntajeElegido, tablaDePuntajes,nroJugador)
+		tipoPuntajeElegidoEsValido <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntajeElegido, tablaDePuntajes,nroJugador,0)
 		si tipoPuntajeElegidoEsValido = 0 Entonces
 			Escribir "Opción no valida, vuelva a elegir"
 			Escribir ""
