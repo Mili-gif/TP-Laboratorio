@@ -12,7 +12,9 @@ Algoritmo juegoDelDiezMil
 	Definir posicionDado Como Entero
 	Definir puedeTirarDado Como Entero
 	Definir vecContador Como Entero
-
+	Definir hayUnosOCincos Como Entero
+	Definir resTiraTodosLosDados Como Entero
+	Definir puedeTirarLosCincoDados Como Entero
 	Dimension vecContador[6]
 	llegoAMilPts <- 0
 	puntosEscalera <- 0
@@ -20,10 +22,10 @@ Algoritmo juegoDelDiezMil
 	CANTIDAD_DE_DADOS <- 5
 	Dimension dados[5] 
 //	dados[0] <- 5
-//	dados[1] <- 6
-//	dados[2] <- 3
-//	dados[3] <- 2
-//	dados[4] <- 4
+//	dados[1] <- 5
+//	dados[2] <- 5
+//	dados[3] <- 5
+//	dados[4] <- 5
 	//LLAMADO DE FUNCIONES!!
 	tirarTodosLosDados(dados, CANTIDAD_DE_DADOS)
 	mostrarDados(dados, CANTIDAD_DE_DADOS)
@@ -35,7 +37,7 @@ Algoritmo juegoDelDiezMil
 		Si(hayTresIguales = 1) Entonces
 			puntosEspeciales <- obtienePuntosEspeciales(dados, CANTIDAD_DE_DADOS, vecContador)
 			puntosTirada <- puntosUnosyCincos(dados, CANTIDAD_DE_DADOS, vecContador) + puntosEspeciales
-			mostrar "puntosPrueba(dados, CANTIDAD_DE_DADOS, vecContador) + puntosEspeciales ",puntosTirada
+			//mostrar "puntosPrueba(dados, CANTIDAD_DE_DADOS, vecContador) + puntosEspeciales ",puntosTirada
 			
 		SiNo
 			puntosEspeciales <- obtienePuntosEspeciales(dados, CANTIDAD_DE_DADOS, vecContador)
@@ -52,34 +54,43 @@ Algoritmo juegoDelDiezMil
 		Mostrar "Usted puede anotar, usted hizo: ", puntosTirada
 	SiNo
 		Mostrar "Usted aun no puede anotar, hizo: ", puntosTirada
+		
 	FinSi
 	
-	//contadoresDeTodosLosDados(dados, CANTIDAD_DE_DADOS, vecContador)
+	hayUnosOCincos<- hayTodoUnosOCincos(CANTIDAD_DE_DADOS, vecContador)
+	//mostrar "hay todo cinco o uno", hayUnosOCincos
+	puedeTirarLosCincoDados<-puedeVolverATirarLosCincoDados(vecContador,hayUnosOCincos, puntosEscalera)
+	
 	//Tirada de dados con eleccion del usuario 
 	
-//	repetir
-//		Escribir "Elija el dado que desea volver a tirar y X para salir:"
-//		leer opcionDadoElegida
-//		opcionDadoElegida<-Mayusculas(opcionDadoElegida)
-//		
-//		si opcionDadoElegida <> 'X' Entonces
-//			posicionDado<-obtenerPosicionPorLetraDado(opcionDadoElegida)
-//			puedeTirarDado<-puedeVolverATirarDado(dados, CANTIDAD_DE_DADOS, posicionDado)
-//			
-//			si puedeTirarDado = 1  Entonces
-//				//tira el dado elegido
-//				dados[posicionDado]<-tirarDado
-//			sino si hayEscalera(dados, CANTIDAD_DE_DADOS, vecContador)=1 Entonces
-//					tirarTodosLosDados(dados, CANTIDAD_DE_DADOS)
-//				SiNo
-//					//no tira el dado
-//					Escribir "usted no puede volver a tirar ese dado "
-//				FinSi
-//			FinSi	
-//			 
-//		FinSi
-//	Hasta Que opcionDadoElegida = 'X'
-//	mostrarDados(dados, CANTIDAD_DE_DADOS)
+	si hayUnosOCincos = 1 Entonces
+		Escribir "Puede volver a tirar todos los dados <1> para si <0> para no: "
+		leer resTiraTodosLosDados 
+		si resTiraTodosLosDados = 1 Entonces
+			tirarTodosLosDados(dados, CANTIDAD_DE_DADOS)
+		FinSi
+	FinSi
+	
+	repetir
+		Escribir "Elija el dado que desea volver a tirar y X para salir:"
+		leer opcionDadoElegida
+		opcionDadoElegida<-Mayusculas(opcionDadoElegida)
+		
+		si opcionDadoElegida <> 'X' Entonces
+			posicionDado<-obtenerPosicionPorLetraDado(opcionDadoElegida)
+			puedeTirarDado<-puedeVolverATirarDado(dados, vecContador, posicionDado, puntosEscalera)
+			
+			si puedeTirarDado = 1  Entonces
+				//tira el dado elegido
+				dados[posicionDado]<-tirarDado
+			SiNo
+				//no tira el dado
+				Escribir "usted no puede volver a tirar ese dado "
+			FinSi	
+			
+		FinSi
+	Hasta Que opcionDadoElegida = 'X'
+	mostrarDados(dados, CANTIDAD_DE_DADOS)
 	
 	
 FinAlgoritmo
@@ -258,38 +269,46 @@ SubAlgoritmo contadoresDeTodosLosDados(dados, CANTIDAD_DE_DADOS, vecContador)
 //		Mostrar "la cantidad de veces que salio el numero " , i+1 , " son " ,  vecContador[i]
 //	Fin Para
 FinSubAlgoritmo
-Funcion res<-puedeVolverATirarDado(dados, CANTIDAD_DE_DADOS, posicionDado)
-	Para i<- 0 hasta CANTIDAD_DE_DADOS-1 con Paso 1 Hacer
-		Segun dados[i]  Hacer
-			1: contadorUno<- contadorUno +1
-			2: contadorDos<- contadorDos+1
-			3: contadorTres<- contadorTres+1
-			4: contadorCuatro<- contadorCuatro+1
-			5: contadorCinco<- contadorCinco+1
-			6: contadorSeis <- contadorSeis +1
-		FinSegun
-	FinPara 
+Funcion res<-puedeVolverATirarDado(dados,vecContador, posicionDado,puntosEscalera)
+	
 	Segun dados[posicionDado] Hacer
-		1: si contadorUno >= 0 entonces 
+		1: si vecContador[0] >= 0 entonces 
 				res<-0
 			FinSi
-		2: si contadorDos < 3  entonces 
+		2: si vecContador[1]< 3  entonces 
 				res<-1
 			FinSi
-		3: si contadorTres < 3 entonces 
+		3: si vecContador[2]< 3 entonces 
 				res<-1
 			FinSi
-		4: si contadorCuatro < 3 entonces 
+		4: si vecContador[3]< 3 entonces 
 				res<-1
 			FinSi
-		5: si contadorCinco >= 0 entonces 
+		5: si vecContador[4]>= 0 entonces 
 				res<-0
 			FinSi
-		6: si contadorSeis < 3 entonces 
+		6: si vecContador[5]< 3 entonces 
 				res<-1
 			FinSi 
 	FinSegun
+	si puntosEscalera = 1 Entonces
+		res <- 0
+	FinSi
+FinFuncion 
+
+Funcion res<- hayTodoUnosOCincos(CANTIDAD_DE_DADOS, vecContador)
+	si (vecContador[0] = CANTIDAD_DE_DADOS o vecContador[4] = CANTIDAD_DE_DADOS) Entonces
+		res<-1
+	FinSi
 FinFuncion
-
-
+Funcion resultado <- puedeVolverATirarLosCincoDados(vecContador,hayUnosOCincos, puntosEscalera)//esta funcion nos va servir para los casos que tiene que volver a tirar los 5 dados
+	si(vecContador[0] >= 4 Y vecContador[4] = 1) O (vecContador[0] >= 3 Y vecContador[4] = 2) O (vecContador[0] >= 2 Y vecContador[4] = 3) O (vecContador[0] >= 1 Y vecContador[4] = 4) O (hayUnosOCincos=1) o (puntosEscalera=1) Entonces
+		resultado <- 1
+	SiNo
+		resultado <- 0
+	FinSi
+FinFuncion
+//	res<- puedeTirarTodosLosDados(vecContador, puntosEscalera )
+//
+//Funcion 
  
