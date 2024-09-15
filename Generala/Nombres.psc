@@ -9,7 +9,7 @@ Algoritmo tpLaboratorioGenerala
 	//Definir dadoA,dadoB, dadoC, dadoD, dadoE como Entero
 	Definir dados,CANTIDAD_DE_DADOS como Entero
 	CANTIDAD_DE_DADOS <- 5
-	Definir DADO_A,DADO_B,DADO_C,DADO_D,DADO_E, OPC_DEJAR_DE_ELEGIR Como Caracter
+	Definir DADO_A,DADO_B,DADO_C,DADO_D,DADO_E, OPC_DEJAR_DE_ELEGIR, auxContinuarSiguienteTurno Como Caracter
 	DADO_A <- "A"
 	DADO_B <- "B"
 	DADO_C <- "C"
@@ -17,7 +17,7 @@ Algoritmo tpLaboratorioGenerala
 	DADO_E <- "E"
 	OPC_DEJAR_DE_ELEGIR<- "X"
 	
-	Definir CANTIDAD_TIPOS_PUNTAJES, CANTIDAD_RONDAS, cantidadDeJugadores, nroJugador, nroRonda  como Entero
+	Definir CANTIDAD_TIPOS_PUNTAJES, CANTIDAD_RONDAS, cantidadDeJugadores, nroJugador, proximoNroJugador, nroRonda  como Entero
 	CANTIDAD_TIPOS_PUNTAJES <- 10
 	CANTIDAD_RONDAS <- 2
 	cantidadDeJugadores <- 2
@@ -90,10 +90,17 @@ Algoritmo tpLaboratorioGenerala
 			Borrar Pantalla
 			mostrarTablaPuntaje(tablaDePuntajes, CANTIDAD_TIPOS_PUNTAJES ,cantidadDeJugadores)
 			Escribir "Fin del turno"
-			escribirSeparador()
-			Escribir ""
-			
 			nroJugador <- nroJugador + 1
+			escribirSeparador()
+			
+			Si nroJugador > cantidadDeJugadores Entonces
+				proximoNroJugador <- 1
+			sino 
+				proximoNroJugador <- nroJugador 
+			FinSi
+			Escribir "Pulse cualquier tecla para continuar con el turno del jugador " + nombresJugadores[proximoNroJugador-1]
+			Leer auxContinuarSiguienteTurno
+			
 		Fin Mientras
 		nroJugador <- 1 
 		nroRonda <- nroRonda + 1
@@ -338,7 +345,6 @@ subalgoritmo mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,
 	resultadoGenerala <- puedeAnotarPuntaje(dados,CANTIDAD_DE_DADOS,"G", tablaDePuntajes,nroJugador,esDuranteTirada )
 	
 	aux <- puedeUnoPuntaje + puedeDosPuntaje + puedeTresPuntaje + puedeCuatroPuntaje + puedeCincoPuntaje + puedeSeisPuntaje + resultadoEscalera + resultadoFull + resultadoPoker + resultadoGenerala
-	Escribir ""
 	si aux > 0 Entonces
 		//Escribir  "Posibles Jugadas disponibles: "
 		si puedeUnoPuntaje = 1 Entonces 
@@ -597,9 +603,11 @@ SubAlgoritmo comenzarFaseTiradaDeDados(dados, CANTIDAD_DE_DADOS, tablaDePuntajes
 	Repetir
 		eleccionValida <- 0
 		elecciones<-""
+		Escribir ""
+		Escribir "Jugadas con puntajes"
+		mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador,1)
 		Repetir //Para validar si la eleccion es valida
-			Escribir "Jugadas con puntajes"
-			mostrarOpcionesDePuntajes(dados,CANTIDAD_DE_DADOS, tablaDePuntajes,nroJugador,1) 
+			 
 			Escribir "Elija los dados que quiera volver a tirar."
 			Escribir "En caso de no querer elegir dados ingrese X."
 			Leer eleccion
@@ -616,14 +624,13 @@ SubAlgoritmo comenzarFaseTiradaDeDados(dados, CANTIDAD_DE_DADOS, tablaDePuntajes
 		Hasta Que eleccion = "X"
 		
 		tirarDadosConEleccion(dados , elecciones)
-		mostrarDados(dados,CANTIDAD_DE_DADOS)
-		
+		mostrarDados(dados,CANTIDAD_DE_DADOS)		
 		si elecciones = "X" o contadorTiradas >= 2 Entonces
 			//Borrar Pantalla	
 			esFaseDeTiradas <- 0
-			
 		FinSi
 		contadorTiradas <- contadorTiradas + 1
+		
 	Hasta Que esFaseDeTiradas = 0
 	escribirSeparador()
 FinSubAlgoritmo
