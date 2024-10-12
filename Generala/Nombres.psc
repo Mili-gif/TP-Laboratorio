@@ -19,7 +19,7 @@ Algoritmo tpLaboratorioGenerala
 	
 	Definir CANTIDAD_TIPOS_PUNTAJES, CANTIDAD_RONDAS, cantidadDeJugadores, nroJugador, proximoNroJugador, nroRonda  como Entero
 	CANTIDAD_TIPOS_PUNTAJES <- 10
-	CANTIDAD_RONDAS <- 2
+	CANTIDAD_RONDAS <- CANTIDAD_TIPOS_PUNTAJES // Se puede cambiar a cantidad de rondas pero deberia terminar cuando se anotó en todos los tipos de puntaje
 	cantidadDeJugadores <- 2
 	nroJugador <- 1
 	nroRonda <- 1
@@ -41,7 +41,7 @@ Algoritmo tpLaboratorioGenerala
 	//Fila 9 para puntos de Generala
 	
 	
-	Dimension dados[5] 
+	Dimension dados[CANTIDAD_DE_DADOS] 
 	
 	//dados[0] <- 1
 	//dados[1] <- 2
