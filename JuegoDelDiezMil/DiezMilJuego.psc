@@ -3,13 +3,13 @@ Algoritmo DiezMilJuego
 	Definir CANTIDAD_DE_DADOS Como Entero
 	CANTIDAD_DE_DADOS <- 5
 	Dimension dados[CANTIDAD_DE_DADOS] 
-//	dados[0] <- 5
-//	dados[1] <- 5
-//	dados[2] <- 5
-//	dados[3] <- 5
-//	dados[4] <- 5
-	
-	
+	dados[0] <- 1
+	dados[1] <- 2
+	dados[2] <- 3
+	dados[3] <- 4
+	dados[4] <- 5
+	mostrarDados(dados, CANTIDAD_DE_DADOS)
+	Escribir obtenerDadosQuePuedeVolverALanzar(dados, CANTIDAD_DE_DADOS, 1)
 	
 	
 	
@@ -46,7 +46,7 @@ SubAlgoritmo mostrarDados(dados, CANTIDAD_DE_DADOS)
 	Fin Para
 FinSubAlgoritmo
 
-Funcion resultado <- hayEscalera(dados, CANTIDAD_DE_DADOS)
+Funcion resultado <- hayEscalera(dados, CANTIDAD_DE_DADOS,esPrimeraTirada)
 	resultado <- 0
 	definir i Como Entero
 	definir hayNroUno, hayNroDos, hayNroTres, hayNroCuatro, hayNroCinco, hayNroSeis Como Entero
@@ -57,29 +57,32 @@ Funcion resultado <- hayEscalera(dados, CANTIDAD_DE_DADOS)
 	hayNroCinco <- 0
 	hayNroSeis <- 0
 	
-	Para i <- 0 Hasta CANTIDAD_DE_DADOS - 1 Con Paso 1 Hacer
-		Segun dados[i] Hacer
-			1: hayNroUno <- 1
-			2: hayNroDos <- 1
-			3: hayNroTres <- 1
-			4: hayNroCuatro <- 1
-			5: hayNroCinco <- 1
-			6: hayNroSeis <- 1
-		Fin Segun
-	Fin Para
-	
-	Si (hayNroUno = 1 y hayNroDos = 1 y hayNroTres = 1 y hayNroCuatro = 1 y hayNroCinco = 1) o (hayNroDos = 1 y hayNroTres = 1 y hayNroCuatro = 1 y hayNroCinco = 1 y hayNroSeis = 1) Entonces
-		resultado <- 1
+	si esPrimeraTirada = 1 Entonces
+		Para i <- 0 Hasta CANTIDAD_DE_DADOS - 1 Con Paso 1 Hacer
+			Segun dados[i] Hacer
+				1: hayNroUno <- 1
+				2: hayNroDos <- 1
+				3: hayNroTres <- 1
+				4: hayNroCuatro <- 1
+				5: hayNroCinco <- 1
+				6: hayNroSeis <- 1
+			Fin Segun
+		Fin Para
+		
+		Si (hayNroUno = 1 y hayNroDos = 1 y hayNroTres = 1 y hayNroCuatro = 1 y hayNroCinco = 1) o (hayNroDos = 1 y hayNroTres = 1 y hayNroCuatro = 1 y hayNroCinco = 1 y hayNroSeis = 1) Entonces
+			resultado <- 1
+		FinSi
 	FinSi
+	
 FinFuncion
 //----------------------------------------------------------------------------------------------------------------
 
-Funcion puntaje <- obtenerPuntaje(dados, CANTIDAD_DE_DADOS)
+Funcion puntaje <- obtenerPuntaje(dados, CANTIDAD_DE_DADOS, esPrimeraTirada)
 	puntaje <- 0
 	definir auxPuntaje, i, PUNTAJE_ESCALERA Como Entero
 	PUNTAJE_ESCALERA <- 800
 	
-	si  hayEscalera(dados, CANTIDAD_DE_DADOS) = 1 Entonces
+	si  hayEscalera(dados, CANTIDAD_DE_DADOS, esPrimeraTirada) = 1 Entonces
 		puntaje <- PUNTAJE_ESCALERA 
 	SiNo
 		i <- 1
@@ -142,3 +145,90 @@ Funcion cantidad <- obtenerCantidaDeDadosCoincidentesANro(dados, CANTIDAD_DE_DAD
 		Fin Para
 	FinSi
 FinFuncion
+
+//No puede volver a lanzar los dados que hacen puntaje (los triples) o 1 o 5
+//Si todos los dados hacen puntaje, puede volver a lanzar todos los dados (Escalera servida, 1,1,1,1,1 o 3,3,3,1,5)
+//Ejemplo con 3,3,3,4,6, deberia devolver el dado 4 y 6 para volver a lanzar
+Funcion resultado <- obtenerDadosQuePuedeVolverALanzar(dados, CANTIDAD_DE_DADOS, esPrimeraTirada)
+	definir i Como Entero
+	definir dadosQueNoPuedeTirar Como Caracter
+	resultado <- ""
+	dadosQueNoPuedeTirar <- ""
+	
+	si hayEscalera(dados, CANTIDAD_DE_DADOS, esPrimeraTirada) = 1 Entonces
+		resultado <- "ABCDE"
+	SiNo
+		//Busco triples y unos y cincos
+		dadosQueNoPuedeTirar <- obtenerDadosTriples_2_3_4_6(dados, CANTIDAD_DE_DADOS)
+		dadosQueNoPuedeTirar <- dadosQueNoPuedeTirar + obtenerDadosUnosYCincos(dados, CANTIDAD_DE_DADOS)
+		resultado <- ObtenerDadosFaltantes(dadosQueNoPuedeTirar)
+	FinSi
+FinFuncion
+
+//No verificamos 1 y 5 porque esos no puede volver a tirarlos
+Funcion  resultado <- obtenerDadosTriples_2_3_4_6(dados, CANTIDAD_DE_DADOS)
+	definir nro, hayTriple, auxCantidad Como Entero
+	nro <- 1
+	hayTriple <- 0
+	resultado <- ""
+	
+	Mientras hayTriple = 0 y nro <= 6 Hacer
+		Si nro <> 1 o nro <> 5 Entonces
+			resultado <- resultado + obtenerDadosTriplesDeUnNro(dados, CANTIDAD_DE_DADOS,nro)
+		FinSi
+		nro <- nro + 1
+	Fin Mientras
+FinFuncion
+
+Funcion  resultado <- obtenerDadosTriplesDeUnNro(dados, CANTIDAD_DE_DADOS,nro)
+	definir i, hayTriple, cantidad Como Entero
+	resultado <- ""
+	
+	cantidad <- obtenerCantidaDeDadosCoincidentesANro(dados,CANTIDAD_DE_DADOS,nro)
+	si cantidad >= 3 Entonces
+		Para i<-0 Hasta CANTIDAD_DE_DADOS-1 Con Paso 1 Hacer
+			si dados[i] = nro Entonces
+				resultado <- resultado + obtenerLetraDelDadoPorPosicion(i)
+			FinSi
+		Fin Para
+	FinSi
+FinFuncion
+
+Funcion resultado <- obtenerDadosUnosYCincos(dados, CANTIDAD_DE_DADOS)
+	definir i Como Entero
+	resultado <- ""
+	Para i <- 0 Hasta CANTIDAD_DE_DADOS-1 Con Paso 1 Hacer
+		si dados[i] = 1 o dados[i] = 5 Entonces
+			resultado <- resultado + obtenerLetraDelDadoPorPosicion(i)
+		FinSi
+	Fin Para	
+FinFuncion
+
+
+Funcion resultado <- ObtenerDadosFaltantes(dadosQueNoPuedeTirar)
+	definir DADOS_OPCIONES, dadoActualOpc, dadoActualNoPuedeTirar Como Caracter
+	definir i,j, puedeUsarDado como entero
+	DADOS_OPCIONES <- "ABCDE"
+	resultado <- ""
+	i <- 0
+	Para i <- 0 Hasta Longitud(DADOS_OPCIONES) Con Paso 1 Hacer
+		j <- 0
+		puedeUsarDado <- 1
+		dadoActualOpc <- Subcadena(DADOS_OPCIONES,i,i)
+		Mientras j < Longitud(dadosQueNoPuedeTirar) y puedeUsarDado = 1 Hacer
+			dadoActualNoPuedeTirar <- Subcadena(dadosQueNoPuedeTirar,j,j)
+			si dadoActualOpc = dadoActualNoPuedeTirar Entonces
+				puedeUsarDado <- 0
+			FinSi
+			j <- j + 1
+		Fin Mientras
+		si puedeUsarDado = 1 Entonces
+			resultado <- resultado + dadoActualOpc
+		FinSi
+	Fin Para
+	
+	
+FinFuncion
+
+
+
