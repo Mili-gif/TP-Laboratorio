@@ -1,6 +1,6 @@
 Algoritmo DiezMilJuego
 	Definir dados Como Entero
-	Definir CANTIDAD_DE_DADOS Como Entero
+	Definir CANTIDAD_DE_DADOS, i Como Entero
 	CANTIDAD_DE_DADOS <- 5
 	Dimension dados[CANTIDAD_DE_DADOS] 
 	dados[0] <- 1
@@ -9,8 +9,26 @@ Algoritmo DiezMilJuego
 	dados[3] <- 4
 	dados[4] <- 5
 	mostrarDados(dados, CANTIDAD_DE_DADOS)
-	Escribir obtenerDadosQuePuedeVolverALanzar(dados, CANTIDAD_DE_DADOS, 1)
 	
+	Definir dadosQuePuedeTirar, eleccion Como Caracter
+	Definir puntajeJugador, puntajeRonda, puntajeTirada Como Entero
+	dadosQuePuedeTirar <- obtenerDadosQuePuedeVolverALanzar(dados, CANTIDAD_DE_DADOS, 1)
+	puntajeJugador <-  0
+	puntajeRonda <- 0
+	
+	puntajeRonda <- obtenerPuntaje(dados, CANTIDAD_DE_DADOS, esPrimeraTirada)
+	Escribir "dados son ", Longitud(dadosQuePuedeTirar),": ", dadosQuePuedeTirar
+	mostarDadosQuePuedeTirar(dadosQuePuedeTirar)
+	Escribir "Desea volver a tirar esos dados (Y)? o Terminar la ronda (N)"
+	Leer eleccion
+	eleccion <- Mayusculas(eleccion)
+	Si eleccion = "Y" Entonces
+		Para i <- 0 Hasta Longitud(dadosQuePuedeTirar) Con Paso 1 Hacer
+			dados[obtenerPosicionPorLetraDado(Subcadena(dadosQuePuedeTirar,i,i))] <- tirarDado()
+		Fin Para
+	SiNo
+		
+	FinSi
 	
 	
 FinAlgoritmo
@@ -39,6 +57,18 @@ Funcion letra <- obtenerLetraDelDadoPorPosicion(posicion)
 		De Otro Modo: letra<-"POSICION INVALIDA"
 	Fin Segun
 Fin Funcion
+
+Funcion posicion <- obtenerPosicionPorLetraDado(dadoLetra)
+	Segun dadoLetra Hacer
+		"A": posicion<-0
+		"B": posicion<-1
+		"C": posicion<-2
+		"D": posicion<-3
+		"E": posicion<-4
+		De Otro Modo: posicion<--1
+	Fin Segun
+Fin Funcion
+
 
 SubAlgoritmo mostrarDados(dados, CANTIDAD_DE_DADOS)
 	Para i<-0 Hasta CANTIDAD_DE_DADOS - 1 Con Paso 1 Hacer
@@ -73,6 +103,20 @@ Funcion resultado <- hayEscalera(dados, CANTIDAD_DE_DADOS,esPrimeraTirada)
 			resultado <- 1
 		FinSi
 	FinSi
+	
+FinFuncion
+
+Funcion esValido <- eleccionElegirDadoEsValida(eleccion, opcionesValidas)
+	definir i como entero
+	esValido <- 0
+	eleccion <- Mayusculas(eleccion)
+	i <- 0
+	Repetir
+		si eleccion = Subcadena(opcionesValidas,i,i) Entonces
+			esValido <- 1
+		FinSi
+		i <- i + 1
+	Hasta Que i >= Longitud(opcionesValidas) o esValido = 1
 	
 FinFuncion
 //----------------------------------------------------------------------------------------------------------------
@@ -205,13 +249,13 @@ Funcion resultado <- obtenerDadosUnosYCincos(dados, CANTIDAD_DE_DADOS)
 FinFuncion
 
 
-Funcion resultado <- ObtenerDadosFaltantes(dadosQueNoPuedeTirar)
+Funcion resultado <- obtenerDadosFaltantes(dadosQueNoPuedeTirar)
 	definir DADOS_OPCIONES, dadoActualOpc, dadoActualNoPuedeTirar Como Caracter
 	definir i,j, puedeUsarDado como entero
 	DADOS_OPCIONES <- "ABCDE"
 	resultado <- ""
 	i <- 0
-	Para i <- 0 Hasta Longitud(DADOS_OPCIONES) Con Paso 1 Hacer
+	Para i <- 0 Hasta Longitud(DADOS_OPCIONES) - 1 Con Paso 1 Hacer
 		j <- 0
 		puedeUsarDado <- 1
 		dadoActualOpc <- Subcadena(DADOS_OPCIONES,i,i)
@@ -226,9 +270,38 @@ Funcion resultado <- ObtenerDadosFaltantes(dadosQueNoPuedeTirar)
 			resultado <- resultado + dadoActualOpc
 		FinSi
 	Fin Para
-	
-	
 FinFuncion
 
+SubAlgoritmo mostarDadosQuePuedeTirar(dadosQuePuedeTirar)
+	definir mensaje Como Caracter
+	
+	si Longitud(dadosQuePuedeTirar) > 0 Entonces
+		mensaje <- "Los dados que puede volver a lanzar son: "
+		Para i <- 0 Hasta Longitud(dadosQuePuedeTirar) - 1 Con Paso 1 Hacer
+			si i = 0 Entonces
+				mensaje <- mensaje + " " + Subcadena(dadosQuePuedeTirar,i,i)
+			SiNo
+				mensaje <- mensaje + ", " + Subcadena(dadosQuePuedeTirar,i,i)
+			FinSi
+		FinPara
+		Escribir mensaje
+	FinSi
+FinSubAlgoritmo
 
+
+SubAlgoritmo puedeTirarDado(dadoEleccion)
+	definir mensaje Como Caracter
+	
+	si Longitud(dadosQuePuedeTirar) > 0 Entonces
+		mensaje <- "Los dados que puede volver a lanzar son: "
+		Para i <- 0 Hasta Longitud(dadosQuePuedeTirar) - 1 Con Paso 1 Hacer
+			si i = 0 Entonces
+				mensaje <- mensaje + " " + Subcadena(dadosQuePuedeTirar,i,i)
+			SiNo
+				mensaje <- mensaje + ", " + Subcadena(dadosQuePuedeTirar,i,i)
+			FinSi
+		FinPara
+		Escribir mensaje
+	FinSi
+FinSubAlgoritmo
 

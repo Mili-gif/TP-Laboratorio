@@ -197,11 +197,9 @@ Fin Funcion
 
 //-----------------------------------------------------------------------------------------------
 //Funciones para la fase de eleccion de tiradas de dados
-Funcion esValido <- eleccionElegirDadoEsValida(eleccion)
-	definir opcionesValidas Como Caracter
+Funcion esValido <- eleccionElegirDadoEsValida(eleccion, opcionesValidas)
 	definir i como entero
 	esValido <- 0
-	opcionesValidas <- "ABCDEX"
 	eleccion <- Mayusculas(eleccion)
 	i <- 0
 	Repetir
@@ -596,7 +594,8 @@ FinSubAlgoritmo
 
 SubAlgoritmo comenzarFaseTiradaDeDados(dados, CANTIDAD_DE_DADOS, tablaDePuntajes, nroJugador )
 	Definir eleccionValida, esFaseDeTiradas, contadorTiradas Como Entero
-	Definir elecciones, eleccion Como Caracter
+	Definir elecciones, eleccion, OPCIONES_VALIDAS Como Caracter
+	OPCIONES_VALIDAS <- "ABCDEX"
 	esFaseDeTiradas <- 1
 	contadorTiradas <- 1
 	
@@ -612,7 +611,7 @@ SubAlgoritmo comenzarFaseTiradaDeDados(dados, CANTIDAD_DE_DADOS, tablaDePuntajes
 			Escribir "En caso de no querer elegir dados ingrese X."
 			Leer eleccion
 			eleccion <- Mayusculas(eleccion);
-			eleccionValida <- eleccionElegirDadoEsValida(eleccion)
+			eleccionValida <- eleccionElegirDadoEsValida(eleccion,OPCIONES_VALIDAS)
 			
 			si eleccionValida = 1 Entonces
 				elecciones <- Concatenar(elecciones,eleccion)
@@ -659,3 +658,5 @@ SubAlgoritmo comenzarFaseBuscarYMostrarPuntajesYAnotarPuntaje(dados,CANTIDAD_DE_
 	puntaje <- obtenerPuntaje(dados,CANTIDAD_DE_DADOS,tipoPuntajeElegido)
 	tablaDePuntajes[indiceTipoPuntaje,nroJugador-1] <- puntaje
 FinSubAlgoritmo
+
+
